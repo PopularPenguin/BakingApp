@@ -1,12 +1,15 @@
 package com.popularpenguin.bakingapp.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Parcelable {
     private int mId;
     private String mName;
     private List<Ingredients> mIngredients;
@@ -18,6 +21,67 @@ public class Recipe {
         mIngredients = new ArrayList<>();
         mSteps = new ArrayList<>();
     }
+
+    private Recipe(Parcel in) {
+        mId = in.readInt();
+        mName = in.readString();
+
+        // https://stackoverflow.com/questions/10071502/read-writing-arrays-of-parcelable-objects
+        /*
+        Parcelable[] ingredientsArray = in.readParcelableArray(Ingredients.class.getClassLoader());
+        Ingredients[] ingredientsResult = Arrays.copyOf(
+                ingredientsArray, ingredientsArray.length, Ingredients[].class);
+
+        mIngredients = new ArrayList<>(Arrays.asList(ingredientsResult));
+
+        Parcelable[] stepArray = in.readParcelableArray(Step.class.getClassLoader());
+        Step[] stepResult = Arrays.copyOf(stepArray, stepArray.length, Step[].class);
+
+        mSteps = new ArrayList<>(Arrays.asList(stepResult)); */
+
+        Ingredients[] ingredients = in.createTypedArray(Ingredients.CREATOR);
+        mIngredients = new ArrayList<>(Arrays.asList(ingredients));
+
+        Step[] steps = in.createTypedArray(Step.CREATOR);
+        mSteps = new ArrayList<>(Arrays.asList(steps));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public void readFromParcel(Parcel in) {
+        Ingredients[] ingredients = in.createTypedArray(Ingredients.CREATOR);
+        mIngredients = new ArrayList<>(Arrays.asList(ingredients));
+
+        Step[] steps = in.createTypedArray(Step.CREATOR);
+        mSteps = new ArrayList<>(Arrays.asList(steps));
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mName);
+
+        Ingredients[] ingredients = mIngredients.toArray(new Ingredients[mIngredients.size()]);
+        dest.writeTypedArray(ingredients, 0);
+
+        Step[] steps = mSteps.toArray(new Step[mSteps.size()]);
+        dest.writeTypedArray(steps, 0);
+    }
+
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+        @Override
+        public Recipe createFromParcel(Parcel source) {
+            return new Recipe(source);
+        }
+
+        @Override
+        public Recipe[] newArray(int size) {
+            return new Recipe[size];
+        }
+    };
 
     public int getId() { return mId; }
 

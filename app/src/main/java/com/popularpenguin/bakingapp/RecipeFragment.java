@@ -1,7 +1,7 @@
 package com.popularpenguin.bakingapp;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +17,6 @@ import com.popularpenguin.bakingapp.Data.Ingredients;
 import com.popularpenguin.bakingapp.Data.Recipe;
 import com.popularpenguin.bakingapp.Data.Step;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,8 +27,12 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
 
     @BindView(R.id.rv_recipe) RecyclerView mRecyclerView;
 
-    private RecipeAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+    public static RecipeFragment newInstance(@NonNull Bundle args) {
+        RecipeFragment fragment = new RecipeFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
@@ -41,41 +42,43 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
 
         ButterKnife.bind(this, view);
 
-        // TODO: Mock a recipe, add a list of steps and video urls to display
-        // just display the video urls for now and the mocked instruction steps
-        Recipe recipe = new Recipe(0, "My recipe");
-
-        Ingredients in1 = new Ingredients("1", "C", "Cocoa");
-        Ingredients in2 = new Ingredients("20", "C", "Nuts");
-        Step s1 = new Step(0, "Ingredients", "List of ingredients...",
-                "", "");
-        Step s2 = new Step(1, "Step 1", "Description 1...",
-                "", "");
-        Step s3 = new Step(2, "Step 2", "Description 2...",
-                "", "");
-
-        recipe.addIngredient(in1, in2);
-        recipe.addStep(s1, s2, s3);
-
-        mAdapter = new RecipeAdapter(getContext(), recipe, this);
-        mRecyclerView.setAdapter(mAdapter);
-
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setHasFixedSize(true);
+        Bundle args = getArguments();
+        setData(args);
 
         return view;
     }
 
+    public void setData(@NonNull Bundle args) {
+        if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
+            Recipe recipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
 
+            RecipeAdapter adapter = new RecipeAdapter(getContext(), recipe, this);
+            mRecyclerView.setAdapter(adapter);
+
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setHasFixedSize(true);
+        }
+        else {
+            throw new RuntimeException("Recipe data was not passed to " + TAG);
+        }
+    }
+
+    /** Notify the parent activity when a step is selected and pass the video URL and instructions */
     @Override
-    public void onClick(String video, String instructions) {
-        // TODO: Display the video and the instructions in the instructions fragment
-        // for a phone, need to use the fragmentManager to swap the currently displayed fragment
-
-        // TODO: Pass the selection back to RecipeActivity for the FragmentManager to handle
-
+    public void onClick(String videoURL, String instructions) {
+        try {
+            ((OnStepSelectedListener) getActivity()).onStepSelected(videoURL, instructions);
+        }
+        catch (ClassCastException e) {
+            e.printStackTrace();
+        }
 
         Toast.makeText(getContext(), instructions, Toast.LENGTH_SHORT).show();
+    }
+
+    /** Implement this interface in the parent activity */
+    public interface OnStepSelectedListener {
+        void onStepSelected(String videoURL, String instructions);
     }
 }

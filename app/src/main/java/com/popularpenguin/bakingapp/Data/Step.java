@@ -1,8 +1,10 @@
 package com.popularpenguin.bakingapp.Data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-public class Step {
+public class Step implements Parcelable {
     private int mId;
     private String mShortDescription;
     private String mDescription;
@@ -21,6 +23,40 @@ public class Step {
         mVideoURL = videoURL;
         mThumbnailURL = thumbnailURL;
     }
+
+    private Step(Parcel in) {
+        mId = in.readInt();
+        mShortDescription = in.readString();
+        mDescription = in.readString();
+        mVideoURL = in.readString();
+        mThumbnailURL = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mId);
+        dest.writeString(mShortDescription);
+        dest.writeString(mDescription);
+        dest.writeString(mVideoURL);
+        dest.writeString(mThumbnailURL);
+    }
+
+    static final Parcelable.Creator<Step> CREATOR = new Parcelable.Creator<Step>() {
+        @Override
+        public Step createFromParcel(Parcel source) {
+            return new Step(source);
+        }
+
+        @Override
+        public Step[] newArray(int size) {
+            return new Step[size];
+        }
+    };
 
     public int getId() { return mId; }
 
