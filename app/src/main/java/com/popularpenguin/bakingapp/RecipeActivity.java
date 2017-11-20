@@ -43,9 +43,7 @@ public class RecipeActivity extends AppCompatActivity implements
 
         mFragmentManager = getSupportFragmentManager();
 
-        if (mFragmentManager.findFragmentById(R.id.fragment_instructions) == null) {
-            isPhoneLayout = true;
-        }
+        isPhoneLayout = getResources().getBoolean(R.bool.isPhone);
 
         Bundle args = new Bundle();
         args.putParcelable(RECIPE_EXTRA, mRecipe);
@@ -55,20 +53,6 @@ public class RecipeActivity extends AppCompatActivity implements
         mFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, fragment)
                 .commit();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putBoolean("isPhoneLayout", isPhoneLayout);
-
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        isPhoneLayout = savedInstanceState.getBoolean("isPhoneLayout", false);
-
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     /**

@@ -34,7 +34,6 @@ public class Recipe implements Parcelable {
         mId = in.readInt();
         mName = in.readString();
 
-        // from https://stackoverflow.com/questions/10071502/read-writing-arrays-of-parcelable-objects
         Ingredients[] ingredients = in.createTypedArray(Ingredients.CREATOR);
         mIngredients = new ArrayList<>(Arrays.asList(ingredients));
 
@@ -52,6 +51,7 @@ public class Recipe implements Parcelable {
         dest.writeInt(mId);
         dest.writeString(mName);
 
+        // from https://stackoverflow.com/questions/10071502/read-writing-arrays-of-parcelable-objects
         Ingredients[] ingredients = mIngredients.toArray(new Ingredients[mIngredients.size()]);
         dest.writeTypedArray(ingredients, 0);
 
@@ -66,9 +66,7 @@ public class Recipe implements Parcelable {
         }
 
         @Override
-        public Recipe[] newArray(int size) {
-            return new Recipe[size];
-        }
+        public Recipe[] newArray(int size) { return new Recipe[size]; }
     };
 
     public int getId() { return mId; }

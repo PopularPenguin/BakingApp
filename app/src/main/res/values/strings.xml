@@ -2,4 +2,8 @@
     <string name="app_name">BakingApp</string>
 
     <string name="con_error">Check network connectivity</string>
+
+    <!-- Phone navigation buttons for InstructionsFragment -->
+    <string name="btn_previous">Previous</string>
+    <string name="btn_next">Next</string>
 </resources>
