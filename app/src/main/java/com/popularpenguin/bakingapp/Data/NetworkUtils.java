@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -74,13 +75,15 @@ public class NetworkUtils {
         List<Recipe> recipes = new ArrayList<>();
 
         for (int i = 0; i < results.length(); i++) {
-            int id = results.getJSONObject(i).getInt("id");
-            String name = results.getJSONObject(i).getString("name");
+            JSONObject recipeObject = results.getJSONObject(i);
 
-            JSONArray ingredientsJSON = results.getJSONObject(i).getJSONArray("ingredients");
+            int id = recipeObject.getInt("id");
+            String name = recipeObject.getString("name");
+
+            JSONArray ingredientsJSON = recipeObject.getJSONArray("ingredients");
             List<Ingredients> ingredients = getIngredients(ingredientsJSON);
 
-            JSONArray stepsJSON = results.getJSONObject(i).getJSONArray("steps");
+            JSONArray stepsJSON = recipeObject.getJSONArray("steps");
             List<Step> steps = getSteps(stepsJSON);
 
             Recipe recipe = new Recipe(id, name, ingredients, steps);
@@ -94,10 +97,12 @@ public class NetworkUtils {
     private static List<Ingredients> getIngredients(JSONArray json) throws JSONException {
         List<Ingredients> ingredients = new ArrayList<>();
 
-        for (int j = 0; j < json.length(); j++) {
-            String quantity = json.getJSONObject(j).getString("quantity");
-            String measure = json.getJSONObject(j).getString("measure");
-            String ingredientString = json.getJSONObject(j).getString("ingredient");
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject ingredientObject = json.getJSONObject(i);
+
+            String quantity = ingredientObject.getString("quantity");
+            String measure = ingredientObject.getString("measure");
+            String ingredientString = ingredientObject.getString("ingredient");
 
             Ingredients ingredient = new Ingredients(quantity, measure, ingredientString);
             ingredients.add(ingredient);
@@ -110,12 +115,14 @@ public class NetworkUtils {
     private static List<Step> getSteps(JSONArray json) throws JSONException {
         List<Step> steps = new ArrayList<>();
 
-        for (int k = 0; k < json.length(); k++) {
-            int stepsId = json.getJSONObject(k).getInt("id");
-            String shortDescription = json.getJSONObject(k).getString("shortDescription");
-            String description = json.getJSONObject(k).getString("description");
-            String videoURL = json.getJSONObject(k).getString("videoURL");
-            String thumbnailURL = json.getJSONObject(k).getString("thumbnailURL");
+        for (int i = 0; i < json.length(); i++) {
+            JSONObject stepObject = json.getJSONObject(i);
+
+            int stepsId = stepObject.getInt("id");
+            String shortDescription = stepObject.getString("shortDescription");
+            String description = stepObject.getString("description");
+            String videoURL = stepObject.getString("videoURL");
+            String thumbnailURL = stepObject.getString("thumbnailURL");
 
             Step step = new Step(stepsId, shortDescription, description, videoURL, thumbnailURL);
             steps.add(step);

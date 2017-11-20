@@ -13,9 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.popularpenguin.bakingapp.Controller.RecipeAdapter;
-import com.popularpenguin.bakingapp.Data.Ingredients;
 import com.popularpenguin.bakingapp.Data.Recipe;
-import com.popularpenguin.bakingapp.Data.Step;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

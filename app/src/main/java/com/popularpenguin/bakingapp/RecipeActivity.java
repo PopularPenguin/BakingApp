@@ -16,7 +16,9 @@ import com.popularpenguin.bakingapp.Data.Recipe;
 
 import static com.popularpenguin.bakingapp.MainActivity.RECIPE_EXTRA;
 
-/** Recipe steps, video, and instructions */
+/**
+ * Recipe steps, video, and instructions
+ */
 public class RecipeActivity extends AppCompatActivity implements
         RecipeFragment.OnStepSelectedListener {
 
@@ -46,25 +48,13 @@ public class RecipeActivity extends AppCompatActivity implements
         }
 
         Bundle args = new Bundle();
-        args.putParcelable(RECIPE_EXTRA , mRecipe);
+        args.putParcelable(RECIPE_EXTRA, mRecipe);
 
-        if (isPhoneLayout) {
-            // we are on a phone so add the fragment and it's data in a Bundle
-            RecipeFragment fragment = RecipeFragment.newInstance(args);
+        RecipeFragment fragment = RecipeFragment.newInstance(args);
 
-            mFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
-                    .commit();
-        }
-        else {
-            RecipeFragment fragment = (RecipeFragment)
-                    mFragmentManager.findFragmentById(R.id.fragment_recipe);
-
-            Recipe r = args.getParcelable(MainActivity.RECIPE_EXTRA);
-            Log.d(TAG, "From bundle: " + r.getName());
-
-            fragment.setData(args);
-        }
+        mFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, fragment)
+                .commit();
     }
 
     @Override
@@ -81,8 +71,10 @@ public class RecipeActivity extends AppCompatActivity implements
         super.onRestoreInstanceState(savedInstanceState);
     }
 
-    /** Callback that passes the video URL and instructions to InstructionsFragment
-     * Called from RecipeFragment */
+    /**
+     * Callback that passes the video URL and instructions to InstructionsFragment
+     * Called from RecipeFragment
+     */
     @Override
     public void onStepSelected(String videoURL, String instructions) {
         Log.d(TAG, "url = " + videoURL);

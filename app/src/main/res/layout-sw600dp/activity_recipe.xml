@@ -6,9 +6,8 @@
               android:divider="@drawable/divider"
               android:showDividers="middle">
 
-    <fragment
-        android:name="com.popularpenguin.bakingapp.RecipeFragment"
-        android:id="@+id/fragment_recipe"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
