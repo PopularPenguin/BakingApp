@@ -1,17 +1,19 @@
 package com.popularpenguin.bakingapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.popularpenguin.bakingapp.Controller.RecipeListAdapter;
+import com.popularpenguin.bakingapp.Controller.RecipeLoader;
 import com.popularpenguin.bakingapp.Data.Ingredients;
 import com.popularpenguin.bakingapp.Data.Recipe;
 import com.popularpenguin.bakingapp.Data.Step;
@@ -23,7 +25,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ListFragment extends Fragment implements
-        RecipeListAdapter.RecipeListAdapterOnClickHandler {
+        RecipeListAdapter.RecipeListAdapterOnClickHandler,
+        LoaderManager.LoaderCallbacks<List<Recipe>> {
 
     private static final String TAG = ListFragment.class.getSimpleName();
 
@@ -44,8 +47,14 @@ public class ListFragment extends Fragment implements
 
         ButterKnife.bind(this, view);
 
-        mRecipeList = getTestList(); // TODO: Remove when networking is complete
+        mRecipeList = new ArrayList<>();
 
+        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+
+        return view;
+    }
+
+    private void setupRecyclerView() {
         mAdapter = new RecipeListAdapter(getContext(), mRecipeList, this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -53,8 +62,6 @@ public class ListFragment extends Fragment implements
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-
-        return view;
     }
 
     @Override
@@ -72,6 +79,27 @@ public class ListFragment extends Fragment implements
     public interface OnRecipeSelectedListener {
         void onRecipeSelected(Recipe recipe);
     }
+
+    /** Loader callbacks */
+    @Override
+    public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
+        return new RecipeLoader(getContext());
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
+        if (data == null || data.isEmpty()) {
+            Toast.makeText(getContext(), R.string.con_error, Toast.LENGTH_LONG).show();
+        }
+        else {
+            mRecipeList = data;
+
+            setupRecyclerView();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Recipe>> loader) { /* Not implemented */ }
 
     private List<Recipe> getTestList() {
         // TODO: Remove mock list and replace with network call

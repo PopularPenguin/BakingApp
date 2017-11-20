@@ -16,29 +16,25 @@ public class Recipe implements Parcelable {
     private List<Step> mSteps;
 
     public Recipe(int id, @NonNull String name) {
+        this(id, name, new ArrayList<>(), new ArrayList<>());
+    }
+
+    public Recipe(int id,
+                  @NonNull String name,
+                  @NonNull List<Ingredients> ingredients,
+                  @NonNull List<Step> steps) {
+
         mId = id;
         mName = name;
-        mIngredients = new ArrayList<>();
-        mSteps = new ArrayList<>();
+        mIngredients = ingredients;
+        mSteps = steps;
     }
 
     private Recipe(Parcel in) {
         mId = in.readInt();
         mName = in.readString();
 
-        // https://stackoverflow.com/questions/10071502/read-writing-arrays-of-parcelable-objects
-        /*
-        Parcelable[] ingredientsArray = in.readParcelableArray(Ingredients.class.getClassLoader());
-        Ingredients[] ingredientsResult = Arrays.copyOf(
-                ingredientsArray, ingredientsArray.length, Ingredients[].class);
-
-        mIngredients = new ArrayList<>(Arrays.asList(ingredientsResult));
-
-        Parcelable[] stepArray = in.readParcelableArray(Step.class.getClassLoader());
-        Step[] stepResult = Arrays.copyOf(stepArray, stepArray.length, Step[].class);
-
-        mSteps = new ArrayList<>(Arrays.asList(stepResult)); */
-
+        // from https://stackoverflow.com/questions/10071502/read-writing-arrays-of-parcelable-objects
         Ingredients[] ingredients = in.createTypedArray(Ingredients.CREATOR);
         mIngredients = new ArrayList<>(Arrays.asList(ingredients));
 
@@ -49,14 +45,6 @@ public class Recipe implements Parcelable {
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public void readFromParcel(Parcel in) {
-        Ingredients[] ingredients = in.createTypedArray(Ingredients.CREATOR);
-        mIngredients = new ArrayList<>(Arrays.asList(ingredients));
-
-        Step[] steps = in.createTypedArray(Step.CREATOR);
-        mSteps = new ArrayList<>(Arrays.asList(steps));
     }
 
     @Override
