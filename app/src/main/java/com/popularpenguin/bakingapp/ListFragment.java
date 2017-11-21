@@ -52,6 +52,26 @@ public class ListFragment extends Fragment implements
 
         mRecipeList = new ArrayList<>();
 
+        // START: Code to get rid of logcat error due to recycler view being initialized late
+        // https://stackoverflow.com/questions/29141729/recyclerview-no-adapter-attached-skipping-layout
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setAdapter(new RecyclerView.Adapter() {
+            @Override
+            public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+                return null;
+            }
+
+            @Override
+            public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public int getItemCount() {
+                return 0;
+            }
+        }); // END useless unnecessary code block
+
         getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
         return view;
