@@ -11,21 +11,21 @@
         android:src="@drawable/ic_launcher_background"
         android:scaleType="centerInside"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="3"/>
 
     <!-- TODO: Add card -->
     <TextView
         android:id="@+id/tv_instructions"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="16dp"
         android:text="Cook it!"
         android:layout_weight="4"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:orientation="horizontal"
         android:layout_weight="1">
 

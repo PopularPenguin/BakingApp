@@ -64,19 +64,17 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
 
     /** Notify the parent activity when a step is selected and pass the video URL and instructions */
     @Override
-    public void onClick(String videoURL, String instructions) {
+    public void onClick(int index) {
         try {
-            ((OnStepSelectedListener) getActivity()).onStepSelected(videoURL, instructions);
+            ((OnStepSelectedListener) getActivity()).onStepSelected(index);
         }
         catch (ClassCastException e) {
             e.printStackTrace();
         }
-
-        Toast.makeText(getContext(), instructions, Toast.LENGTH_SHORT).show();
     }
 
     /** Implement this interface in the parent activity */
     public interface OnStepSelectedListener {
-        void onStepSelected(String videoURL, String instructions);
+        void onStepSelected(int index);
     }
 }

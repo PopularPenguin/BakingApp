@@ -5,20 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.popularpenguin.bakingapp.Controller.RecipeListAdapter;
 import com.popularpenguin.bakingapp.Controller.RecipeLoader;
-import com.popularpenguin.bakingapp.Data.Ingredients;
 import com.popularpenguin.bakingapp.Data.Recipe;
-import com.popularpenguin.bakingapp.Data.Step;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +52,7 @@ public class ListFragment extends Fragment implements
 
         mRecipeList = new ArrayList<>();
 
-        getActivity().getSupportLoaderManager().initLoader(0, null, this);
+        getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
         return view;
     }
@@ -63,9 +61,21 @@ public class ListFragment extends Fragment implements
         mAdapter = new RecipeListAdapter(getContext(), mRecipeList, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        // TODO: Set to a grid layout for tablets
+        boolean isPhone = getContext().getResources().getBoolean(R.bool.isPhone);
+        int orientation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+        // use a linear layout if on a phone
+        if (isPhone) {
+            mLayoutManager = new LinearLayoutManager(getContext());
+        }
+        // use a 2 column grid layout if the tablet is in portrait or reverse portrait mode
+        else if (orientation == Surface.ROTATION_0 || orientation == Surface.ROTATION_180) {
+            mLayoutManager = new GridLayoutManager(getContext(), 2);
+        }
+        // tablet is in landscape or reverse landscape mode
+        else {
+            mLayoutManager = new GridLayoutManager(getContext(), 3);
+        }
 
-        mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setHasFixedSize(true);
     }

@@ -13,6 +13,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.Data.Step;
+
+import java.util.ArrayList;
 
 import static com.popularpenguin.bakingapp.MainActivity.RECIPE_EXTRA;
 
@@ -24,8 +27,7 @@ public class RecipeActivity extends AppCompatActivity implements
 
     private static final String TAG = RecipeActivity.class.getSimpleName();
 
-    public static final String VIDEO_URL_EXTRA = "videoURL";
-    public static final String INSTRUCTIONS_EXTRA = "instructions";
+    public static final String INDEX_EXTRA = "index";
     public static final String BUNDLE_EXTRA = "bundle";
 
     private FragmentManager mFragmentManager;
@@ -60,13 +62,16 @@ public class RecipeActivity extends AppCompatActivity implements
      * Called from RecipeFragment
      */
     @Override
-    public void onStepSelected(String videoURL, String instructions) {
-        Log.d(TAG, "url = " + videoURL);
-        Log.d(TAG, "instructions = " + instructions);
+    public void onStepSelected(int index) {
+        Step step = mRecipe.getSteps().get(index);
+        Log.d(TAG, "url = " + step.getVideoURL());
+        Log.d(TAG, "instructions = " + step.getDescription());
 
         Bundle args = new Bundle();
-        args.putString(VIDEO_URL_EXTRA, videoURL);
-        args.putString(INSTRUCTIONS_EXTRA, instructions);
+        args.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
+        args.putInt(INDEX_EXTRA, index);
+        //args.putString(VIDEO_URL_EXTRA, videoURL);
+        //args.putString(INSTRUCTIONS_EXTRA, instructions);
 
         // if there is no instructions fragment, we are on a phone, so replace the current fragment
         if (isPhoneLayout) {

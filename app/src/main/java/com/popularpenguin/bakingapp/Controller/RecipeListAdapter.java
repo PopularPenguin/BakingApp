@@ -1,10 +1,17 @@
 package com.popularpenguin.bakingapp.Controller;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.popularpenguin.bakingapp.Data.Recipe;
@@ -62,6 +69,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
     class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.tv_list_item) TextView mItemText;
+        @BindView(R.id.iv_list_image) ImageView mImage;
 
         ListViewHolder(View itemView) {
             super(itemView);
@@ -73,6 +81,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
         void bind(Recipe recipe) {
             mItemText.setText(recipe.getName());
+            int position = getAdapterPosition();
+            mImage.setImageResource(getImage(position));
         }
 
         @Override
@@ -81,5 +91,17 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
             mClickHandler.onClick(mRecipeList.get(position));
         }
+    }
+
+    /** Obtain the image id for the specific adapter position as defined in values/arrays.xml */
+    private int getImage(int position) {
+        // TODO: Make a default image for broken image links, pass its resId as defValue
+        // https://stackoverflow.com/questions/6945678/storing-r-drawable-ids-in-xml-array
+        TypedArray ids = ctx.getResources().obtainTypedArray(R.array.array_images);
+        int imageId = ids.getResourceId(position, -1);
+
+        ids.recycle();
+
+        return imageId;
     }
 }

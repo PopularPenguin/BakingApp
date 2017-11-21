@@ -25,7 +25,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private final RecipeAdapterOnClickHandler mClickHandler;
 
     public interface RecipeAdapterOnClickHandler {
-        void onClick(String videoURL, String instructions);
+        void onClick(int index);
     }
 
     private final Context ctx;
@@ -84,11 +84,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
-            Step step = mRecipe.getSteps().get(position);
-            String videoURL = step.getVideoURL();
-            String instructions = step.getDescription();
 
-            mClickHandler.onClick(videoURL, instructions);
+            mClickHandler.onClick(position);
         }
     }
 }
