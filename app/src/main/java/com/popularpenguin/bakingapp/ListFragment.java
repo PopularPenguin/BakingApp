@@ -70,7 +70,7 @@ public class ListFragment extends Fragment implements
             public int getItemCount() {
                 return 0;
             }
-        }); // END useless unnecessary code block
+        }); // END code block
 
         getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
