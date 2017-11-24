@@ -17,11 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
@@ -46,7 +44,7 @@ import butterknife.ButterKnife;
 
 /** The fragment holding the individual instructions for a step */
 public class InstructionsFragment extends Fragment implements View.OnClickListener,
-        ExoPlayer.EventListener {
+        Player.EventListener {
 
     private static final String TAG = InstructionsFragment.class.getSimpleName();
 
@@ -79,10 +77,10 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         View view = inflater.inflate(R.layout.fragment_instructions, container, false);
 
-
         isPhone = getResources().getBoolean(R.bool.isPhone);
 
         if (isPhone) {
+            // these views don't exist in the tablet layout
             mPrevious = view.findViewById(R.id.btn_previous);
             mPrevious.setOnClickListener(this);
 
@@ -106,6 +104,11 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (savedInstanceState != null) {
+            mRecipe = savedInstanceState.getParcelable("recipe");
+            mIndex = savedInstanceState.getInt("index");
+        }
+
         Step step = mRecipe.getSteps().get(mIndex);
         Uri uri = getVideoUri(step);
 
@@ -121,8 +124,17 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("recipe", mRecipe);
+        outState.putInt("index", mIndex);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
+
         releasePlayer();
         mMediaSession.setActive(false);
     }
@@ -131,7 +143,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
      * on index */
     private void setViews() {
         mInstructionsText = mRecipe.getSteps().get(mIndex).getDescription();
-        Log.d(TAG, "Instructions: " + mInstructionsText);
         mInstructions.setText(mInstructionsText);
 
         // disable buttons if they are at first/last index
@@ -177,7 +188,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     /** Release ExoPlayer */
     private void releasePlayer() {
-        //mNotificationManager.cancelAll();
         mExoPlayer.stop();
         mExoPlayer.release();
         mExoPlayer = null;
@@ -203,14 +213,26 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         }
     }
 
+    /** Switch the video to proper step when navigating back/forward */
+    private void switchVideo() {
+        releasePlayer();
+
+        Step step = mRecipe.getSteps().get(mIndex);
+        Uri videoUri = getVideoUri(step);
+
+        initPlayer(videoUri);
+    }
+
     /** Handle previous and next button clicks on mobile */
     @Override
     public void onClick(View v) {
+
         switch(v.getId()) {
             case R.id.btn_previous:
                 if (mIndex > 0) {
                     mIndex--;
                     setViews();
+                    switchVideo();
                 }
 
                 break;
@@ -219,6 +241,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
                 if (mIndex < mRecipe.getSteps().size() - 1) {
                     mIndex++;
                     setViews();
+                    switchVideo();
                 }
 
                 break;

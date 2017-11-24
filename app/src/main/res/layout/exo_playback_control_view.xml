@@ -34,6 +34,7 @@
         <ImageButton android:id="@id/exo_pause"
                      style="@style/ExoMediaButton.Pause"/>
 
+
     </LinearLayout>
 
     <LinearLayout
