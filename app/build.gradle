@@ -39,4 +39,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.1'
 
     compile 'com.google.android.exoplayer:exoplayer-core:r2.5.4'
+    compile 'com.google.android.exoplayer:exoplayer-ui:r2.5.4'
+
 }
