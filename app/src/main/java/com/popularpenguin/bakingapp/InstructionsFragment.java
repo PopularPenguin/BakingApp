@@ -95,6 +95,9 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         if (args != null) {
             setData(args);
         }
+        else {
+            throw new RuntimeException("args is null");
+        }
 
         return view;
     }

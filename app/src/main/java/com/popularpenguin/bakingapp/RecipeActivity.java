@@ -63,15 +63,9 @@ public class RecipeActivity extends AppCompatActivity implements
      */
     @Override
     public void onStepSelected(int index) {
-        Step step = mRecipe.getSteps().get(index);
-        Log.d(TAG, "url = " + step.getVideoURL());
-        Log.d(TAG, "instructions = " + step.getDescription());
-
         Bundle args = new Bundle();
         args.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
         args.putInt(INDEX_EXTRA, index);
-        //args.putString(VIDEO_URL_EXTRA, videoURL);
-        //args.putString(INSTRUCTIONS_EXTRA, instructions);
 
         // if there is no instructions fragment, we are on a phone, so replace the current fragment
         if (isPhoneLayout) {
@@ -81,10 +75,11 @@ public class RecipeActivity extends AppCompatActivity implements
         }
         // tablet
         else {
-            InstructionsFragment fragment = (InstructionsFragment)
-                    mFragmentManager.findFragmentById(R.id.fragment_instructions);
+            InstructionsFragment fragment = InstructionsFragment.newInstance(args);
 
-            fragment.setData(args);
+            mFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_step, fragment)
+                    .commit();
         }
     }
 }
