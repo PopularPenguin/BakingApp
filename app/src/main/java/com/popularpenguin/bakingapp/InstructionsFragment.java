@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
@@ -141,6 +142,20 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        // hide the navigation bar and status bar on phones while in landscape mode (full screen video)
+        // https://developer.android.com/training/system-ui/status.html
+        if (isPhone && !isPortrait) {
+            View decorView = getActivity().getWindow().getDecorView();
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -158,6 +173,14 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         if (isPhone && isPortrait) {
             mPrevious.setEnabled(mIndex > 0);
             mNext.setEnabled(mIndex < mRecipe.getSteps().size() -1);
+        }
+
+        // Hide ExoPlayer if there is no video to display (url is empty)
+        if (mRecipe.getSteps().get(mIndex).getVideoURL().isEmpty()) {
+            mPlayerView.setVisibility(View.INVISIBLE);
+        }
+        else {
+            mPlayerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -288,7 +311,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
                     1f);
         }
         mMediaSession.setPlaybackState(mStateBuilder.build());
-        //showNotification(mStateBuilder.build());
     }
 
     @Override
