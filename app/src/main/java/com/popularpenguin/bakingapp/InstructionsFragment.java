@@ -13,6 +13,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -57,6 +58,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     private int mIndex;
     private String mInstructionsText;
     private boolean isPhone;
+    private boolean isPortrait;
 
     // ExoPlayer members
     private SimpleExoPlayer mExoPlayer;
@@ -79,7 +81,11 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         isPhone = getResources().getBoolean(R.bool.isPhone);
 
-        if (isPhone) {
+        int orientation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
+        isPortrait = orientation == Surface.ROTATION_0 ||
+                orientation == Surface.ROTATION_180;
+
+        if (isPhone && isPortrait) {
             // these views don't exist in the tablet layout
             mPrevious = view.findViewById(R.id.btn_previous);
             mPrevious.setOnClickListener(this);
@@ -149,7 +155,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         mInstructions.setText(mInstructionsText);
 
         // disable buttons if they are at first/last index
-        if (isPhone) {
+        if (isPhone && isPortrait) {
             mPrevious.setEnabled(mIndex > 0);
             mNext.setEnabled(mIndex < mRecipe.getSteps().size() -1);
         }

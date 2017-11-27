@@ -26,6 +26,7 @@ public class StepActivity extends AppCompatActivity {
         InstructionsFragment fragment = InstructionsFragment.newInstance(args);
 
         FragmentManager manager = getSupportFragmentManager();
+
         manager.beginTransaction()
                 .replace(R.id.fragment_container_step, fragment)
                 .commit();
