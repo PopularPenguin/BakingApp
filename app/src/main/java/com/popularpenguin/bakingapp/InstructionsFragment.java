@@ -101,7 +101,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         ButterKnife.bind(this, view);
 
-        Bundle args = getArguments();
+        Bundle args = savedInstanceState != null ? savedInstanceState : getArguments();
 
         if (args != null) {
             setData(args);
@@ -117,11 +117,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mRecipe = savedInstanceState.getParcelable("recipe");
-            mIndex = savedInstanceState.getInt("index");
-        }
 
         Step step = mRecipe.getSteps().get(mIndex);
         Uri uri = getVideoUri(step);
