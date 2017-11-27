@@ -12,23 +12,27 @@ public class StepActivity extends AppCompatActivity {
 
     private static final String TAG = StepActivity.class.getSimpleName();
 
+    private static final String FRAGMENT_TAG = "instructions";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
 
-        Bundle args = new Bundle();
-        Intent intent = getIntent();
-        if (intent.hasExtra(RecipeActivity.BUNDLE_EXTRA)) {
-            args = intent.getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
-        }
-
-        InstructionsFragment fragment = InstructionsFragment.newInstance(args);
-
         FragmentManager manager = getSupportFragmentManager();
 
-        manager.beginTransaction()
-                .replace(R.id.fragment_container_step, fragment)
-                .commit();
+        if (manager.findFragmentByTag(FRAGMENT_TAG) == null) {
+            Bundle args = new Bundle();
+            Intent intent = getIntent();
+            if (intent.hasExtra(RecipeActivity.BUNDLE_EXTRA)) {
+                args = intent.getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
+            }
+
+            InstructionsFragment fragment = InstructionsFragment.newInstance(args);
+
+            manager.beginTransaction()
+                    .add(R.id.fragment_container_step, fragment, FRAGMENT_TAG)
+                    .commit();
+        }
     }
 }

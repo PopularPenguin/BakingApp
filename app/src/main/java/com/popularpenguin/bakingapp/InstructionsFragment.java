@@ -49,6 +49,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private static final String TAG = InstructionsFragment.class.getSimpleName();
 
+    private static int count;
+
     @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
     @BindView(R.id.tv_instructions) TextView mInstructions;
     Button mPrevious;
@@ -68,6 +70,9 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public static InstructionsFragment newInstance(@NonNull Bundle args) {
         InstructionsFragment fragment = new InstructionsFragment();
         fragment.setArguments(args);
+
+        count++;
+        Log.d(TAG, "InstructionsFragment created: " + count);
 
         return fragment;
     }
