@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -39,7 +40,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.popularpenguin.bakingapp.Data.Recipe;
-import com.popularpenguin.bakingapp.Data.Step;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +59,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private Recipe mRecipe;
     private int mIndex;
-    private String mInstructionsText;
     private boolean isPhone;
     private boolean isPortrait;
 
@@ -114,18 +113,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
-    /** Get the recipe step and pass the uri to initialize ExoPlayer */
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        Step step = mRecipe.getSteps().get(mIndex);
-        Uri uri = getVideoUri(step);
-
-        initMediaSession();
-        initPlayer(uri);
-    }
-
     public void setData(@NonNull Bundle args) {
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
         mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
@@ -141,6 +128,16 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         super.onSaveInstanceState(outState);
     }
 
+    // https://codelabs.developers.google.com/codelabs/exoplayer-intro/#2
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (Util.SDK_INT > 23) {
+            initPlayer();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -153,21 +150,42 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         }
+
+        if ((Util.SDK_INT <= 23 || mExoPlayer == null)) {
+            initPlayer();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        releasePlayer();
         mMediaSession.setActive(false);
     }
 
     /** set the text for the instructions and if it is a phone, enable/disable buttons based
      * on index */
     private void setViews() {
-        mInstructionsText = mRecipe.getSteps().get(mIndex).getDescription();
-        mInstructions.setText(mInstructionsText);
+        String instructionsText = mRecipe.getSteps().get(mIndex).getDescription();
+        mInstructions.setText(instructionsText);
 
         // disable buttons if they are at first/last index
         if (isPhone && isPortrait) {
@@ -184,14 +202,38 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         }
     }
 
-    /** Get the video's Uri from whatever JSON text field has it */
-    private Uri getVideoUri(Step step) {
-        if (!step.getVideoURL().isEmpty()) {
-            return Uri.parse(step.getVideoURL());
+    /** Release ExoPlayer */
+    private void releasePlayer() {
+        if (mExoPlayer != null) {
+            mExoPlayer.stop();
+            mExoPlayer.release();
+            mExoPlayer = null;
         }
-        else {
-            // if the thumbnail is empty too just return an empty Uri
-            return Uri.parse(step.getThumbnailURL());
+    }
+
+    /** Initialize ExoPlayer */
+    private void initPlayer() {
+        initMediaSession();
+
+        if (mExoPlayer == null) {
+            DefaultRenderersFactory renderer = new DefaultRenderersFactory(getContext());
+            TrackSelector trackSelector = new DefaultTrackSelector();
+            LoadControl loadControl = new DefaultLoadControl();
+            mExoPlayer = ExoPlayerFactory.newSimpleInstance(renderer, trackSelector, loadControl);
+            mPlayerView.setPlayer(mExoPlayer);
+
+            mExoPlayer.addListener(this);
+
+            // get the video uri from the recipe object
+            Uri uri = mRecipe.getVideoUri(mIndex);
+
+            // prepare the MediaSource
+            String userAgent = Util.getUserAgent(getContext(), "BakingApp");
+            MediaSource mediaSource = new ExtractorMediaSource(uri,
+                    new DefaultDataSourceFactory(getContext(), userAgent),
+                    new DefaultExtractorsFactory(), null, null);
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.setPlayWhenReady(true);
         }
     }
 
@@ -218,41 +260,11 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         mMediaSession.setActive(true);
     }
 
-    /** Release ExoPlayer */
-    private void releasePlayer() {
-        mExoPlayer.stop();
-        mExoPlayer.release();
-        mExoPlayer = null;
-    }
-
-    /** Initialize ExoPlayer */
-    private void initPlayer(Uri uri) {
-        if (mExoPlayer == null) {
-            TrackSelector trackSelector = new DefaultTrackSelector();
-            LoadControl loadControl = new DefaultLoadControl();
-            mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
-            mPlayerView.setPlayer(mExoPlayer);
-
-            mExoPlayer.addListener(this);
-
-            // prepare the MediaSource
-            String userAgent = Util.getUserAgent(getContext(), "BakingApp");
-            MediaSource mediaSource = new ExtractorMediaSource(uri,
-                    new DefaultDataSourceFactory(getContext(), userAgent),
-                    new DefaultExtractorsFactory(), null, null);
-            mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
-        }
-    }
-
     /** Switch the video to proper step when navigating back/forward */
     private void switchVideo() {
         releasePlayer();
 
-        Step step = mRecipe.getSteps().get(mIndex);
-        Uri videoUri = getVideoUri(step);
-
-        initPlayer(videoUri);
+        initPlayer();
     }
 
     /** Handle previous and next button clicks on mobile */

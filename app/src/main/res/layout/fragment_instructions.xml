@@ -17,12 +17,23 @@
         android:layout_height="0dp"
         android:layout_weight="4">
 
-        <!-- TODO: Add card -->
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_vertical_margin"
+            card_view:cardBackgroundColor="@color/colorCard"
+            card_view:cardCornerRadius="8dp"
+            card_view:cardElevation="16dp">
         <TextView
             android:id="@+id/tv_instructions"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_vertical"/>
+
+        </android.support.v7.widget.CardView>
 
     </ScrollView>
 

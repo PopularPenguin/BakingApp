@@ -24,11 +24,15 @@
         </activity>
         <activity android:name=".StepActivity">
         </activity>
-        <receiver android:name=".InstructionsFragment$MediaReceiver">
+
+        <receiver
+            android:name=".InstructionsFragment$MediaReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

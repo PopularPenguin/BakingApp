@@ -1,5 +1,6 @@
 package com.popularpenguin.bakingapp.Data;
 
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/** Recipe contains an Ingredients list and a Steps list */
 public class Recipe implements Parcelable {
     private int mId;
     private String mName;
@@ -41,6 +43,32 @@ public class Recipe implements Parcelable {
         mSteps = new ArrayList<>(Arrays.asList(steps));
     }
 
+    /** Get the video uri stored in the Recipe object
+     *
+     * @param index Index of the recipe step to get the uri from
+     * @return the Uri of the video to send to ExoPlayer
+     */
+    public Uri getVideoUri(int index) {
+        Step step = this.getSteps().get(index);
+        String uriString;
+
+        if (!step.getVideoURL().isEmpty()) {
+            uriString = step.getVideoURL();
+        }
+        else {
+            // load the mp4 in the thumbnail
+            uriString = step.getThumbnailURL();
+        }
+
+        // check if the link is .mp4, if not return an empty uri
+        if (uriString.endsWith(".mp4")) {
+            return Uri.parse(uriString);
+        }
+        else {
+            return Uri.parse("");
+        }
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -68,6 +96,8 @@ public class Recipe implements Parcelable {
         @Override
         public Recipe[] newArray(int size) { return new Recipe[size]; }
     };
+
+    // ------------------- Getters and Setters -------------------------------------------- //
 
     public int getId() { return mId; }
 

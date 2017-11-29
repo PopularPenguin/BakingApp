@@ -6,11 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
 
 import com.popularpenguin.bakingapp.Controller.RecipeAdapter;
 import com.popularpenguin.bakingapp.Data.Recipe;
@@ -19,10 +18,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /** This class handles the recipe's ingredients and steps list */
-public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdapterOnClickHandler {
+public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdapterOnClickHandler,
+    View.OnClickListener {
 
     private static final String TAG = RecipeFragment.class.getSimpleName();
 
+    @BindView(R.id.btn_ingredients) Button mIngredients;
     @BindView(R.id.rv_recipe) RecyclerView mRecyclerView;
 
     public static RecipeFragment newInstance(@NonNull Bundle args) {
@@ -43,10 +44,12 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         Bundle args = getArguments();
         setData(args);
 
+        mIngredients.setOnClickListener(this);
+
         return view;
     }
 
-    public void setData(@NonNull Bundle args) {
+    private void setData(@NonNull Bundle args) {
         if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
             Recipe recipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
 
@@ -70,6 +73,26 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         }
         catch (ClassCastException e) {
             e.printStackTrace();
+        }
+    }
+
+    /** For the button */
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_ingredients:
+                Bundle args = getArguments();
+
+                Fragment fragment = IngredientsFragment.newInstance(args);
+
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Invalid view id");
         }
     }
 

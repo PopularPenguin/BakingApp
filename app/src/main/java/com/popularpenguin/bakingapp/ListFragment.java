@@ -32,9 +32,6 @@ public class ListFragment extends Fragment implements
 
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
 
-    private RecipeListAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
-
     private List<Recipe> mRecipeList;
 
     /** Implement in MainActivity to get the recipe to put in an intent */
@@ -78,25 +75,27 @@ public class ListFragment extends Fragment implements
     }
 
     private void setupRecyclerView() {
-        mAdapter = new RecipeListAdapter(getContext(), mRecipeList, this);
-        mRecyclerView.setAdapter(mAdapter);
+        RecipeListAdapter adapter = new RecipeListAdapter(getContext(), mRecipeList, this);
+        RecyclerView.LayoutManager layoutManager;
+
+        mRecyclerView.setAdapter(adapter);
 
         boolean isPhone = getContext().getResources().getBoolean(R.bool.isPhone);
         int orientation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         // use a linear layout if on a phone
         if (isPhone) {
-            mLayoutManager = new LinearLayoutManager(getContext());
+            layoutManager = new LinearLayoutManager(getContext());
         }
         // use a 2 column grid layout if the tablet is in portrait or reverse portrait mode
         else if (orientation == Surface.ROTATION_0 || orientation == Surface.ROTATION_180) {
-            mLayoutManager = new GridLayoutManager(getContext(), 2);
+            layoutManager = new GridLayoutManager(getContext(), 2);
         }
         // tablet is in landscape or reverse landscape mode
         else {
-            mLayoutManager = new GridLayoutManager(getContext(), 3);
+            layoutManager = new GridLayoutManager(getContext(), 3);
         }
 
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
     }
 

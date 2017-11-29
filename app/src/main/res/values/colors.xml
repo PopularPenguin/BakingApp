@@ -3,4 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorCard">@android:color/holo_orange_light</color>
+    <color name="colorCard2">@android:color/holo_blue_light</color>
+
+    <color name="textColorCard2">#FFFFFF</color>
 </resources>

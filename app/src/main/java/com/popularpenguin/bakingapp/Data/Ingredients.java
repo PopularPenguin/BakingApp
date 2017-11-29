@@ -5,8 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 public class Ingredients implements Parcelable {
-    private String mQuantity;
-    private String mIngredient;
+    private final String mQuantity;
+    private final String mIngredient;
 
     public Ingredients(@NonNull String quantity,
                        @NonNull String measure,

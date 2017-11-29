@@ -3,6 +3,12 @@
 
     <string name="con_error">Check network connectivity</string>
 
+    <string name="btn_ingredients">Ingredients \-\-\u003E</string>
+    <string name="btn_steps">\u003C\-\- Steps </string>
+
+    <string name="text_select_step">Select a step: </string>
+    <string name="text_ingredients">List of ingredients: </string>
+
     <!-- Phone navigation buttons for InstructionsFragment -->
     <string name="btn_previous">Previous</string>
     <string name="btn_next">Next</string>
