@@ -212,7 +212,17 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     }
 
     /** Initialize ExoPlayer */
+    // Logcat error - java.lang.IllegalStateException: Handler (com.google.android.exoplayer2.upstream.Loader$ReleaseTask)
+    // https://github.com/google/ExoPlayer/issues/426 - safe to ignore
     private void initPlayer() {
+        // get the video uri from the recipe object
+        Uri uri = mRecipe.getVideoUri(mIndex);
+
+        // if the uri is empty, no need to initialize the player now
+        if (uri.toString().isEmpty()) {
+            return;
+        }
+
         initMediaSession();
 
         if (mExoPlayer == null) {
@@ -223,9 +233,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
             mPlayerView.setPlayer(mExoPlayer);
 
             mExoPlayer.addListener(this);
-
-            // get the video uri from the recipe object
-            Uri uri = mRecipe.getVideoUri(mIndex);
 
             // prepare the MediaSource
             String userAgent = Util.getUserAgent(getContext(), "BakingApp");
