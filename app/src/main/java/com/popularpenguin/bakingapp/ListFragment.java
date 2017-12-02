@@ -1,5 +1,7 @@
 package com.popularpenguin.bakingapp;
 
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,15 +10,16 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.popularpenguin.bakingapp.Controller.RecipeListAdapter;
-import com.popularpenguin.bakingapp.Controller.RecipeLoader;
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.controller.RecipeListAdapter;
+import com.popularpenguin.bakingapp.controller.RecipeLoader;
+import com.popularpenguin.bakingapp.data.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,10 @@ public class ListFragment extends Fragment implements
         LoaderManager.LoaderCallbacks<List<Recipe>> {
 
     private static final String TAG = ListFragment.class.getSimpleName();
+
+    public static final String RECIPES_UPDATED = "com.popularpenguin.bakingapp.RECIPES_UPDATED";
+
+    public static final String RECIPE_LIST_EXTRA = "recipes";
 
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
 

@@ -1,4 +1,4 @@
-package com.popularpenguin.bakingapp.Controller;
+package com.popularpenguin.bakingapp.controller;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.popularpenguin.bakingapp.Data.Recipe;
-import com.popularpenguin.bakingapp.Data.Step;
+import com.popularpenguin.bakingapp.data.Recipe;
+import com.popularpenguin.bakingapp.data.Step;
 import com.popularpenguin.bakingapp.R;
 
 import java.util.List;

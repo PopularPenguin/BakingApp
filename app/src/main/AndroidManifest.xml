@@ -20,7 +20,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecipeActivity">
-
         </activity>
         <activity android:name=".StepActivity">
         </activity>
@@ -31,6 +30,16 @@
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
+        </receiver>
+
+        <receiver android:name=".controller.RecipeWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/recipe_widget_info"/>
         </receiver>
 
     </application>

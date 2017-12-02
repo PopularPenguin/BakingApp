@@ -1,4 +1,4 @@
-package com.popularpenguin.bakingapp.Controller;
+package com.popularpenguin.bakingapp.controller;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.data.Recipe;
 import com.popularpenguin.bakingapp.R;
 
 import java.util.List;

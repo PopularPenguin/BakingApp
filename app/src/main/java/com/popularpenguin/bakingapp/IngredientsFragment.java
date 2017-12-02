@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.popularpenguin.bakingapp.Data.Ingredients;
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.data.Ingredients;
+import com.popularpenguin.bakingapp.data.Recipe;
 
 import java.util.List;
 

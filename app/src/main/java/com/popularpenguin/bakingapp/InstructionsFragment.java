@@ -39,7 +39,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.data.Recipe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

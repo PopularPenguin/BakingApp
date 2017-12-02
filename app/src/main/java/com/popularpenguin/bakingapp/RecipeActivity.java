@@ -1,5 +1,6 @@
 package com.popularpenguin.bakingapp;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.data.Recipe;
 
 import static com.popularpenguin.bakingapp.MainActivity.RECIPE_EXTRA;
 
@@ -22,6 +23,7 @@ public class RecipeActivity extends AppCompatActivity implements
 
     public static final String INDEX_EXTRA = "index";
     public static final String BUNDLE_EXTRA = "bundle";
+    public static final String RECIPE_BROADCAST_EXTRA = "recipeBroadcast";
 
     private FragmentManager mFragmentManager;
     private Recipe mRecipe;
@@ -53,7 +55,8 @@ public class RecipeActivity extends AppCompatActivity implements
                     .commit();
         }
 
-
+        // send the selected recipe to the widget
+        broadcastRecipe();
     }
 
     /**
@@ -80,5 +83,13 @@ public class RecipeActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_container_step, fragment)
                     .commit();
         }
+    }
+
+    /** Send the broadcast for the widget */
+    private void broadcastRecipe() {
+        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(RECIPE_BROADCAST_EXTRA, mRecipe);
+
+        sendBroadcast(intent);
     }
 }

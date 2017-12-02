@@ -1,10 +1,10 @@
-package com.popularpenguin.bakingapp.Controller;
+package com.popularpenguin.bakingapp.controller;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
 
-import com.popularpenguin.bakingapp.Data.NetworkUtils;
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.data.NetworkUtils;
+import com.popularpenguin.bakingapp.data.Recipe;
 
 import java.util.List;
 

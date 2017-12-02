@@ -1,4 +1,4 @@
-package com.popularpenguin.bakingapp.Data;
+package com.popularpenguin.bakingapp.data;
 
 import android.support.annotation.Nullable;
 import android.support.test.espresso.IdlingResource;

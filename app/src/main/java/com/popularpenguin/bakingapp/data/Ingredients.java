@@ -1,4 +1,4 @@
-package com.popularpenguin.bakingapp.Data;
+package com.popularpenguin.bakingapp.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -7,8 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.popularpenguin.bakingapp.Data.Recipe;
-import com.popularpenguin.bakingapp.Data.SimpleIdlingResource;
+import com.popularpenguin.bakingapp.data.Recipe;
+import com.popularpenguin.bakingapp.data.SimpleIdlingResource;
 
 public class MainActivity extends AppCompatActivity implements
         ListFragment.OnRecipeSelectedListener {
@@ -23,6 +23,10 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.list_container, new ListFragment())
+                .commit();
     }
 
     @Override

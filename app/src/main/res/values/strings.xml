@@ -12,4 +12,7 @@
     <!-- Phone navigation buttons for InstructionsFragment -->
     <string name="btn_previous">Previous</string>
     <string name="btn_next">Next</string>
+
+    <string name="appwidget_text">Select a recipe inside the app</string>
+    <string name="add_widget">Add widget</string>
 </resources>

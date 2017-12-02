@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.popularpenguin.bakingapp.Controller.RecipeAdapter;
-import com.popularpenguin.bakingapp.Data.Recipe;
+import com.popularpenguin.bakingapp.controller.RecipeAdapter;
+import com.popularpenguin.bakingapp.data.Recipe;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
