@@ -2,6 +2,7 @@
     <string name="app_name">BakingApp</string>
 
     <string name="con_error">Check network connectivity</string>
+    <string name="recipe_empty">No recipe data</string>
 
     <string name="btn_ingredients">Ingredients \-\-\u003E</string>
     <string name="btn_steps">\u003C\-\- Steps </string>
@@ -15,4 +16,5 @@
 
     <string name="appwidget_text">Select a recipe inside the app</string>
     <string name="add_widget">Add widget</string>
+
 </resources>

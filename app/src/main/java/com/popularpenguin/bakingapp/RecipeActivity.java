@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.popularpenguin.bakingapp.data.Recipe;
 
@@ -35,8 +34,6 @@ public class RecipeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_recipe);
 
         mRecipe = getIntent().getParcelableExtra(RECIPE_EXTRA);
-
-        Log.d(TAG, mRecipe.getName());
 
         mFragmentManager = getSupportFragmentManager();
 
@@ -69,13 +66,13 @@ public class RecipeActivity extends AppCompatActivity implements
         args.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
         args.putInt(INDEX_EXTRA, index);
 
-        // if there is no instructions fragment, we are on a phone, so replace the current fragment
+        // we are on a phone, so start StepActivity
         if (isPhoneLayout) {
             Intent intent = new Intent(this, StepActivity.class);
             intent.putExtra(BUNDLE_EXTRA, args);
             startActivity(intent);
         }
-        // tablet
+        // tablet, replace InstructionsFragment
         else {
             InstructionsFragment fragment = InstructionsFragment.newInstance(args);
 

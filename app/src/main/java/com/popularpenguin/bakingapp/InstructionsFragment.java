@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -50,6 +51,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private static final String TAG = InstructionsFragment.class.getSimpleName();
 
+    public static final String POSITION_EXTRA = "position";
+
     private static int count;
 
     @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
@@ -66,6 +69,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     private SimpleExoPlayer mExoPlayer;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
+    private long mPosition; // the position in ms of the video
+
 
     public static InstructionsFragment newInstance(@NonNull Bundle args) {
         InstructionsFragment fragment = new InstructionsFragment();
@@ -116,14 +121,16 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public void setData(@NonNull Bundle args) {
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
         mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
+        mPosition = args.getLong(POSITION_EXTRA);
 
         setViews();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("recipe", mRecipe);
-        outState.putInt("index", mIndex);
+        outState.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
+        outState.putInt(RecipeActivity.INDEX_EXTRA, mIndex);
+        outState.putLong(POSITION_EXTRA, mExoPlayer.getCurrentPosition());
 
         super.onSaveInstanceState(outState);
     }
@@ -240,7 +247,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
                     new DefaultDataSourceFactory(getContext(), userAgent),
                     new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(false);
+            mExoPlayer.seekTo(mPosition);
         }
     }
 
@@ -269,6 +277,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     /** Switch the video to proper step when navigating back/forward */
     private void switchVideo() {
+        mPosition = 0; // reset the seek position
         releasePlayer();
 
         initPlayer();

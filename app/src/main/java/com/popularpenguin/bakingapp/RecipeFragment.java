@@ -49,20 +49,27 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         return view;
     }
 
-    private void setData(@NonNull Bundle args) {
-        if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
-            Recipe recipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
+    private void setData(Bundle args) {
+        Recipe recipe;
 
-            RecipeAdapter adapter = new RecipeAdapter(getContext(), recipe, this);
-            mRecyclerView.setAdapter(adapter);
+        if (args == null) {
+            recipe = new Recipe(-1, getString(R.string.recipe_empty));
+        }
+        else if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
+            recipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
 
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            mRecyclerView.setLayoutManager(layoutManager);
-            mRecyclerView.setHasFixedSize(true);
+
         }
         else {
             throw new RuntimeException("Recipe data was not passed to " + TAG);
         }
+
+        RecipeAdapter adapter = new RecipeAdapter(getContext(), recipe, this);
+        mRecyclerView.setAdapter(adapter);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
     }
 
     /** Notify the parent activity when a step is selected and pass the video URL and instructions */

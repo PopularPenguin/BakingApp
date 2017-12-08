@@ -33,13 +33,12 @@ public class ListFragment extends Fragment implements
 
     private static final String TAG = ListFragment.class.getSimpleName();
 
-    public static final String RECIPES_UPDATED = "com.popularpenguin.bakingapp.RECIPES_UPDATED";
-
-    public static final String RECIPE_LIST_EXTRA = "recipes";
+    public static final String RECYCLER_POSITION_EXTRA = "recyclerPosition";
 
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
 
     private List<Recipe> mRecipeList;
+    private int mPosition; // recycler view vertical scroll position
 
     /** Implement in MainActivity to get the recipe to put in an intent */
     public interface OnRecipeSelectedListener {
@@ -55,6 +54,10 @@ public class ListFragment extends Fragment implements
         ButterKnife.bind(this, view);
 
         mRecipeList = new ArrayList<>();
+
+        if (savedInstanceState != null) {
+            mPosition = savedInstanceState.getInt(RECYCLER_POSITION_EXTRA);
+        }
 
         // START: Code to get rid of logcat error due to recycler view being initialized late
         // https://stackoverflow.com/questions/29141729/recyclerview-no-adapter-attached-skipping-layout
@@ -79,6 +82,13 @@ public class ListFragment extends Fragment implements
         getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(RECYCLER_POSITION_EXTRA, mRecyclerView.getVerticalScrollbarPosition());
+
+        super.onSaveInstanceState(outState);
     }
 
     private void setupRecyclerView() {
