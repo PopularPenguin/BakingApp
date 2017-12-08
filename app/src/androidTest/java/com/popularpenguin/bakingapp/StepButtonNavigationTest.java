@@ -1,18 +1,15 @@
 package com.popularpenguin.bakingapp;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import com.android21buttons.fragmenttestrule.FragmentTestRule;
 import com.popularpenguin.bakingapp.data.Recipe;
 import com.popularpenguin.bakingapp.data.Step;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +17,6 @@ import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -69,7 +65,7 @@ public class StepButtonNavigationTest {
     @Test
     public void testNextButton() {
         for (int i = 0; i < 10; i++) {
-            onView(withId(R.id.tv_instructions))
+            onView(TestUtils.first(withId(R.id.tv_instructions)))
                     .check(matches(withText(String.valueOf(i))));
 
             onView(TestUtils.first(withId(R.id.btn_next)))

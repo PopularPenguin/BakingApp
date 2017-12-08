@@ -108,6 +108,9 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         Bundle args = savedInstanceState != null ? savedInstanceState : getArguments();
 
+        if (isPhone) {
+            args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
+        }
         if (args != null) {
             setData(args);
         }
@@ -185,7 +188,9 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public void onDestroy() {
         super.onDestroy();
 
-        mMediaSession.setActive(false);
+        if (mMediaSession != null) {
+            mMediaSession.setActive(false);
+        }
     }
 
     /** set the text for the instructions and if it is a phone, enable/disable buttons based
