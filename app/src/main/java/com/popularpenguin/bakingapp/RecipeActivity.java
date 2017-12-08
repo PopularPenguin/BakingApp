@@ -3,6 +3,7 @@ package com.popularpenguin.bakingapp;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,6 +25,8 @@ public class RecipeActivity extends AppCompatActivity implements
     public static final String BUNDLE_EXTRA = "bundle";
     public static final String RECIPE_BROADCAST_EXTRA = "recipeBroadcast";
 
+    public static final String INGREDIENTS_TAG = "IngredientsFragment";
+
     private FragmentManager mFragmentManager;
     private Recipe mRecipe;
     private boolean isPhoneLayout;
@@ -33,7 +36,12 @@ public class RecipeActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
-        mRecipe = getIntent().getParcelableExtra(RECIPE_EXTRA);
+        if (savedInstanceState != null) {
+            mRecipe = savedInstanceState.getParcelable(RECIPE_EXTRA);
+        }
+        else {
+            mRecipe = getIntent().getParcelableExtra(RECIPE_EXTRA);
+        }
 
         mFragmentManager = getSupportFragmentManager();
 
@@ -41,11 +49,16 @@ public class RecipeActivity extends AppCompatActivity implements
 
         Bundle args = new Bundle();
         args.putParcelable(RECIPE_EXTRA, mRecipe);
+        args.putInt(INDEX_EXTRA, 0);
+
+        Intent intent = new Intent();
+        intent.putExtra(RecipeActivity.BUNDLE_EXTRA, args);
+        setIntent(intent);
 
         // don't add a fragment if there is already one inside the container
         Fragment containerFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
         if (containerFragment == null) {
-            RecipeFragment fragment = RecipeFragment.newInstance(args);
+            RecipeFragment fragment = new RecipeFragment();
 
             mFragmentManager.beginTransaction()
                     .add(R.id.fragment_container, fragment)
@@ -54,6 +67,13 @@ public class RecipeActivity extends AppCompatActivity implements
 
         // send the selected recipe to the widget
         broadcastRecipe();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(RECIPE_EXTRA, mRecipe);
+
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -74,12 +94,31 @@ public class RecipeActivity extends AppCompatActivity implements
         }
         // tablet, replace InstructionsFragment
         else {
-            InstructionsFragment fragment = InstructionsFragment.newInstance(args);
+            InstructionsFragment fragment = new InstructionsFragment();
 
             mFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container_step, fragment)
                     .commit();
         }
+    }
+
+    /** If in IngredientFragment on a phone, back will bring you back to the RecipeFragment
+     * otherwise without this method it would bring you back to MainActivity/ListFragment */
+    @Override
+    public void onBackPressed() {
+        if (isPhoneLayout) {
+            if (mFragmentManager.findFragmentByTag(INGREDIENTS_TAG) != null) {
+                Fragment fragment = new RecipeFragment();
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+
+                return;
+            }
+        }
+
+        super.onBackPressed();
     }
 
     /** Send the broadcast for the widget */

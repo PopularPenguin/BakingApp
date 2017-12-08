@@ -20,13 +20,7 @@ public class StepActivity extends AppCompatActivity {
         FragmentManager manager = getSupportFragmentManager();
 
         if (manager.findFragmentByTag(FRAGMENT_TAG) == null) {
-            Bundle args = new Bundle();
-            Intent intent = getIntent();
-            if (intent.hasExtra(RecipeActivity.BUNDLE_EXTRA)) {
-                args = intent.getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
-            }
-
-            InstructionsFragment fragment = InstructionsFragment.newInstance(args);
+            InstructionsFragment fragment = new InstructionsFragment();
 
             manager.beginTransaction()
                     .add(R.id.fragment_container_step, fragment, FRAGMENT_TAG)

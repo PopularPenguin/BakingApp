@@ -26,13 +26,6 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
     @BindView(R.id.btn_ingredients) Button mIngredients;
     @BindView(R.id.rv_recipe) RecyclerView mRecyclerView;
 
-    public static RecipeFragment newInstance(@NonNull Bundle args) {
-        RecipeFragment fragment = new RecipeFragment();
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -41,7 +34,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
 
         ButterKnife.bind(this, view);
 
-        Bundle args = getArguments();
+        Bundle args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
         setData(args);
 
         mIngredients.setOnClickListener(this);
@@ -88,12 +81,10 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_ingredients:
-                Bundle args = getArguments();
-
-                Fragment fragment = IngredientsFragment.newInstance(args);
+                Fragment fragment = new IngredientsFragment();
 
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
+                        .replace(R.id.fragment_container, fragment, RecipeActivity.INGREDIENTS_TAG)
                         .commit();
 
                 break;

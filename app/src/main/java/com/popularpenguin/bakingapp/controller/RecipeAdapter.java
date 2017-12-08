@@ -52,8 +52,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         List<Step> list = mRecipe.getSteps();
         String stepDescription = list.get(position).getShortDescription();
 
-        if (stepDescription == null) Log.d(TAG, "step description is null");
-
         holder.bindStep(stepDescription);
     }
 

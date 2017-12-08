@@ -53,8 +53,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     public static final String POSITION_EXTRA = "position";
 
-    private static int count;
-
     @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
     @BindView(R.id.tv_instructions) TextView mInstructions;
     Button mPrevious;
@@ -70,17 +68,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private long mPosition; // the position in ms of the video
-
-
-    public static InstructionsFragment newInstance(@NonNull Bundle args) {
-        InstructionsFragment fragment = new InstructionsFragment();
-        fragment.setArguments(args);
-
-        count++;
-        Log.d(TAG, "InstructionsFragment created: " + count);
-
-        return fragment;
-    }
 
     @Override @Nullable
     public View onCreateView(LayoutInflater inflater,
@@ -106,17 +93,21 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         ButterKnife.bind(this, view);
 
-        Bundle args = savedInstanceState != null ? savedInstanceState : getArguments();
+        Bundle args;
 
-        if (isPhone) {
+        if (savedInstanceState != null) {
+            args = savedInstanceState;
+        }
+        else if (isPhone) {
             args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
         }
-        if (args != null) {
-            setData(args);
-        }
         else {
-            throw new RuntimeException("args is null");
+            args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
+            //args = getArguments(); // tablet
         }
+
+        setData(args);
+        setViews();
 
         return view;
     }
@@ -125,8 +116,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
         mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
         mPosition = args.getLong(POSITION_EXTRA);
-
-        setViews();
     }
 
     @Override

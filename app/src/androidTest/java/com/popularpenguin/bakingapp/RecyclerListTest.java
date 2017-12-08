@@ -66,7 +66,7 @@ public class RecyclerListTest {
     public void clickFourthItem() { clickList(3); }
 
     private void clickList(int position) {
-        onView(withId(R.id.rv_list))
+        onView(allOf(withId(R.id.rv_list)))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(position, click()));
     }
 

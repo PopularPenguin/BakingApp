@@ -24,13 +24,6 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
 
     private Recipe mRecipe;
 
-    public static IngredientsFragment newInstance(Bundle args) {
-        IngredientsFragment fragment = new IngredientsFragment();
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
     @Nullable @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
@@ -40,7 +33,10 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
 
         ButterKnife.bind(this, view);
 
-        mRecipe = getArguments().getParcelable(MainActivity.RECIPE_EXTRA);
+        // get the recipe from the parent activity's intent bundle
+        mRecipe = getActivity().getIntent()
+                .getBundleExtra(RecipeActivity.BUNDLE_EXTRA)
+                .getParcelable(MainActivity.RECIPE_EXTRA);
 
         mSteps.setOnClickListener(this);
 
@@ -67,9 +63,7 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_steps:
-                Bundle args = getArguments();
-
-                Fragment fragment = RecipeFragment.newInstance(args);
+                Fragment fragment = new RecipeFragment();
 
                 getFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, fragment)
