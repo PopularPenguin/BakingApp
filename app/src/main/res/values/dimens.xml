@@ -9,13 +9,13 @@
     <!-- Main Activity / ListFragment -->
     <dimen name="recipe_card_width_phone">300dp</dimen>
     <dimen name="recipe_card_height_phone">150dp</dimen>
-    <dimen name="recipe_card_width_tablet">300dp</dimen>
-    <dimen name="recipe_card_height_tablet">150dp</dimen>
+    <dimen name="recipe_card_width_tablet">400dp</dimen>
+    <dimen name="recipe_card_height_tablet">190dp</dimen>
 
     <dimen name="recipe_image_width_phone">160dp</dimen>
-    <dimen name="recipe_image_width_tablet">160dp</dimen>
+    <dimen name="recipe_image_width_tablet">240dp</dimen>
     <dimen name="recipe_image_height_phone">100dp</dimen>
-    <dimen name="recipe_image_height_tablet">100dp</dimen>
+    <dimen name="recipe_image_height_tablet">150dp</dimen>
 
     <dimen name="recipe_card_corner">8dp</dimen>
     <dimen name="recipe_card_elevation">16dp</dimen>

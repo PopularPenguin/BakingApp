@@ -2,7 +2,6 @@ package com.popularpenguin.bakingapp.controller;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +71,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
 
         void bindStep(String stepDescription) {
-            Log.d(TAG, stepDescription);
-
             stepName.setText(stepDescription);
         }
 

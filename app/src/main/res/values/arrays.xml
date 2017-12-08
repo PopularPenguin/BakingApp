@@ -3,7 +3,7 @@
     <integer-array name="array_images">
         <item>@drawable/nutella</item>
         <item>@drawable/brownie</item>
-        <item>@drawable/nutella</item>
-        <item>@drawable/brownie</item>
+        <item>@drawable/cake</item>
+        <item>@drawable/cheesecake</item>
     </integer-array>
 </resources>
