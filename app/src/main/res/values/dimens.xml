@@ -25,11 +25,6 @@
     <dimen name="card_elevation">8dp</dimen>
     <dimen name="card_margin">16dp</dimen>
 
-    <!-- Widget -->
-    <!-- 4x2 cells -->
-    <dimen name="widget_width">250dp</dimen>
-    <dimen name="widget_height">110dp</dimen>
-
     <!--
 Refer to App Widget Documentation for margin information
 http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
