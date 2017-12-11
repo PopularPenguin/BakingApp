@@ -42,16 +42,11 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         return view;
     }
 
-    private void setData(Bundle args) {
+    private void setData(@NonNull Bundle args) {
         Recipe recipe;
 
-        if (args == null) {
-            recipe = new Recipe(-1, getString(R.string.recipe_empty));
-        }
-        else if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
+        if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
             recipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
-
-
         }
         else {
             throw new RuntimeException("Recipe data was not passed to " + TAG);

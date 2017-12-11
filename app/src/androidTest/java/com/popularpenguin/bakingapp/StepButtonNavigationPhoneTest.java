@@ -20,14 +20,13 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-/** Test the previous and next buttons on a phone in the RecipeFragment */
+/** Test the previous and next buttons on a phone in the RecipeFragment
+ * FOR PHONES ONLY, TABLETS DON'T HAVE THESE 2 BUTTONS */
 @RunWith(AndroidJUnit4.class)
-public class StepButtonNavigationTest {
+public class StepButtonNavigationPhoneTest {
 
     private Recipe mRecipe;
-    private Bundle args;
 
-    // TODO: Fix args is null
     @Rule
     public FragmentTestRule<StepActivity, InstructionsFragment> mRule =
             new FragmentTestRule<StepActivity, InstructionsFragment>
@@ -38,7 +37,7 @@ public class StepButtonNavigationTest {
                     Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
                     mRecipe = createTestRecipe();
 
-                    args = new Bundle();
+                    Bundle args = new Bundle();
                     args.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
                     args.putInt(RecipeActivity.INDEX_EXTRA, 0);
 
@@ -49,6 +48,7 @@ public class StepButtonNavigationTest {
                 }
             };
 
+    // simple Recipe object that just has 10 steps (named 0 - 9)
     public Recipe createTestRecipe() {
         // create a test recipe
         Recipe recipe = new Recipe(-1, "mock");
@@ -62,21 +62,30 @@ public class StepButtonNavigationTest {
         return recipe;
     }
 
+    /** Click the next button 9 times and check the step text
+     * then click the previous button until back at step 0 */
     @Test
-    public void testNextButton() {
-        for (int i = 0; i < 10; i++) {
+    public void testNavigationButtons() {
+        // check the step's text and then click the next button to go to the next step
+        for (int i = 0; i < 9; i++) {
             onView(TestUtils.first(withId(R.id.tv_instructions)))
                     .check(matches(withText(String.valueOf(i))));
 
             onView(TestUtils.first(withId(R.id.btn_next)))
                     .perform(click());
         }
-    }
 
-    @Test
-    public void testPreviousButton() {
-        onView(TestUtils.first(withId(R.id.btn_previous)))
-                .perform(click());
-    }
+        // check TextView for last step
+        onView(TestUtils.first(withId(R.id.tv_instructions)))
+                .check(matches(withText(String.valueOf(mRecipe.getSteps().size() - 1))));
 
+        // reverse through the steps by clicking previous and checking each step's TextView
+        for (int i = 9; i >= 0; i--) {
+            onView(TestUtils.first(withId(R.id.tv_instructions)))
+                    .check(matches(withText(String.valueOf(i))));
+
+            onView(TestUtils.first(withId(R.id.btn_previous)))
+                    .perform(click());
+        }
+    }
 }

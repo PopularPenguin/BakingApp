@@ -122,7 +122,13 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
         outState.putInt(RecipeActivity.INDEX_EXTRA, mIndex);
-        outState.putLong(POSITION_EXTRA, mExoPlayer.getCurrentPosition());
+
+        if (mExoPlayer != null) {
+            outState.putLong(POSITION_EXTRA, mExoPlayer.getCurrentPosition());
+        }
+        else {
+            outState.putLong(POSITION_EXTRA, 0L);
+        }
 
         super.onSaveInstanceState(outState);
     }

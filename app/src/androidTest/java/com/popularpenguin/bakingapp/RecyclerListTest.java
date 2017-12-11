@@ -27,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.anything;
 
-// TODO: Make test(s) functional, add more
+// TODO: Check idling resources
 /** Test that all recipes display after being clicked */
 @RunWith(AndroidJUnit4.class)
 public class RecyclerListTest {
@@ -66,7 +66,7 @@ public class RecyclerListTest {
     public void clickFourthItem() { clickList(3); }
 
     private void clickList(int position) {
-        onView(allOf(withId(R.id.rv_list)))
+        onView(TestUtils.first(withId(R.id.rv_list)))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(position, click()));
     }
 
@@ -74,28 +74,6 @@ public class RecyclerListTest {
     public void unregisterIdlingResource() {
         if (mIdlingResource != null) {
             IdlingRegistry.getInstance().unregister(mIdlingResource);
-        }
-    }
-
-    static class MyViewAction {
-        public static ViewAction clickChildViewId(final int id) {
-            return new ViewAction() {
-                @Override
-                public Matcher<View> getConstraints() {
-                    return null;
-                }
-
-                @Override
-                public String getDescription() {
-                    return "Click child view";
-                }
-
-                @Override
-                public void perform(UiController uiController, View view) {
-                    View v = view.findViewById(id);
-                    v.performClick();
-                }
-            };
         }
     }
 }
