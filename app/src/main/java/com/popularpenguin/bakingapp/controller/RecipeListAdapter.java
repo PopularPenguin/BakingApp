@@ -90,7 +90,6 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
     /** Obtain the image id for the specific adapter position as defined in values/arrays.xml */
     private int getImage(int position) {
-        // TODO: Make a default image for broken image links, pass its resId as defValue
         // https://stackoverflow.com/questions/6945678/storing-r-drawable-ids-in-xml-array
         TypedArray ids = ctx.getResources().obtainTypedArray(R.array.array_images);
         int imageId = ids.getResourceId(position, -1);
