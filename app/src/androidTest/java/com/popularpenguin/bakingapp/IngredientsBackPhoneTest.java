@@ -27,11 +27,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertTrue;
 
-/** Test the navigation between RecipeFragment and IngredientsFragment */
+/** Check that the back button navigates from IngredientsFragment to RecipeFragment
+ * PHONES ONLY */
 @RunWith(AndroidJUnit4.class)
 public class IngredientsBackPhoneTest {
-
-    Recipe mRecipe;
 
     // From the Fragment Test Rule external library
     @Rule
@@ -41,16 +40,15 @@ public class IngredientsBackPhoneTest {
         @Override
         protected Intent getActivityIntent() {
             Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
-            mRecipe = new Recipe(-1, "mock");
-            mRecipe.addIngredient("5", "CUP", "nuts");
+            Recipe recipe = new Recipe(-1, "mock");
+            recipe.addIngredient("5", "CUP", "nuts");
 
             Intent intent = new Intent(ctx, RecipeActivity.class);
-            intent.putExtra(MainActivity.RECIPE_EXTRA, mRecipe);
+            intent.putExtra(MainActivity.RECIPE_EXTRA, recipe);
 
             return intent;
         }
     };
-
 
     @Test
     public void checkBackButton() {

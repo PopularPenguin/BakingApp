@@ -82,7 +82,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         isPortrait = orientation == Surface.ROTATION_0 ||
                 orientation == Surface.ROTATION_180;
 
-        if (isPhone && isPortrait) {
+        if (!isPhone || isPortrait) {
             // these views don't exist in the tablet layout
             mPrevious = view.findViewById(R.id.btn_previous);
             mPrevious.setOnClickListener(this);
@@ -98,12 +98,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         if (savedInstanceState != null) {
             args = savedInstanceState;
         }
-        else if (isPhone) {
-            args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
-        }
         else {
             args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
-            //args = getArguments(); // tablet
         }
 
         setData(args);
@@ -123,6 +119,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         outState.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
         outState.putInt(RecipeActivity.INDEX_EXTRA, mIndex);
 
+        // save the video seek position
         if (mExoPlayer != null) {
             outState.putLong(POSITION_EXTRA, mExoPlayer.getCurrentPosition());
         }
@@ -195,7 +192,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         mInstructions.setText(instructionsText);
 
         // disable buttons if they are at first/last index
-        if (isPhone && isPortrait) {
+        if (!isPhone || isPortrait) {
             mPrevious.setEnabled(mIndex > 0);
             mNext.setEnabled(mIndex < mRecipe.getSteps().size() -1);
         }
@@ -247,7 +244,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
                     new DefaultDataSourceFactory(getContext(), userAgent),
                     new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(false);
+            mExoPlayer.setPlayWhenReady(true);
             mExoPlayer.seekTo(mPosition);
         }
     }

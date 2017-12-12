@@ -1,15 +1,11 @@
 package com.popularpenguin.bakingapp;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.android21buttons.fragmenttestrule.FragmentTestRule;
-import com.popularpenguin.bakingapp.MainActivity;
-import com.popularpenguin.bakingapp.RecipeActivity;
-import com.popularpenguin.bakingapp.RecipeFragment;
 import com.popularpenguin.bakingapp.data.Ingredients;
 import com.popularpenguin.bakingapp.data.Recipe;
 
@@ -27,7 +23,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class IngredientsTextTest {
 
-    Recipe mRecipe;
+    private Recipe mRecipe;
 
     // From the Fragment Test Rule external library
     @Rule

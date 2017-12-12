@@ -20,10 +20,9 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
-/** Test the previous and next buttons on a phone in the RecipeFragment
- * FOR PHONES ONLY, TABLETS DON'T HAVE THESE 2 BUTTONS */
+/** Test the previous and next buttons on a phone in the RecipeFragment */
 @RunWith(AndroidJUnit4.class)
-public class StepButtonNavigationPhoneTest {
+public class StepButtonNavigationTest {
 
     private Recipe mRecipe;
 

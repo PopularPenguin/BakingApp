@@ -94,6 +94,10 @@ public class RecipeActivity extends AppCompatActivity implements
         }
         // tablet, replace InstructionsFragment
         else {
+            Intent intent = new Intent();
+            intent.putExtra(BUNDLE_EXTRA, args);
+            setIntent(intent);
+
             InstructionsFragment fragment = new InstructionsFragment();
 
             mFragmentManager.beginTransaction()

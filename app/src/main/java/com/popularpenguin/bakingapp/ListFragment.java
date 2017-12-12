@@ -1,7 +1,5 @@
 package com.popularpenguin.bakingapp;
 
-import android.appwidget.AppWidgetManager;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
@@ -12,7 +10,6 @@ import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -77,8 +74,6 @@ public class ListFragment extends Fragment implements
             }
         }); // END code block
 
-        //getActivity().getSupportLoaderManager().restartLoader(0, null, this);
-
         return view;
     }
 
@@ -86,8 +81,6 @@ public class ListFragment extends Fragment implements
     public void onResume() {
         super.onResume();
 
-        mIdlingResource = (SimpleIdlingResource) getIdlingResource();
-        mIdlingResource.setIdleState(false);
         getActivity().getSupportLoaderManager().restartLoader(0, null, this);
     }
 
@@ -116,6 +109,7 @@ public class ListFragment extends Fragment implements
         mRecyclerView.setHasFixedSize(true);
     }
 
+    /** Clicking the RecyclerView */
     @Override
     public void onClick(Recipe recipe) {
         // pass the selected recipe back to the parent activity
@@ -130,6 +124,9 @@ public class ListFragment extends Fragment implements
     /** Loader callbacks */
     @Override
     public Loader<List<Recipe>> onCreateLoader(int id, Bundle args) {
+        mIdlingResource = (SimpleIdlingResource) getIdlingResource();
+        mIdlingResource.setIdleState(false);
+
         return new RecipeLoader(getContext());
     }
 
