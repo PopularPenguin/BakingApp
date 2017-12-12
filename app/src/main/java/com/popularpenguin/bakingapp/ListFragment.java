@@ -4,6 +4,8 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import com.popularpenguin.bakingapp.controller.RecipeListAdapter;
 import com.popularpenguin.bakingapp.controller.RecipeLoader;
 import com.popularpenguin.bakingapp.data.Recipe;
+import com.popularpenguin.bakingapp.data.SimpleIdlingResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +39,8 @@ public class ListFragment extends Fragment implements
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
 
     private List<Recipe> mRecipeList;
+
+    private SimpleIdlingResource mIdlingResource;
 
     /** Implement in MainActivity to get the recipe to put in an intent */
     public interface OnRecipeSelectedListener {
@@ -72,9 +77,18 @@ public class ListFragment extends Fragment implements
             }
         }); // END code block
 
-        getActivity().getSupportLoaderManager().restartLoader(0, null, this);
+        //getActivity().getSupportLoaderManager().restartLoader(0, null, this);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mIdlingResource = (SimpleIdlingResource) getIdlingResource();
+        mIdlingResource.setIdleState(false);
+        getActivity().getSupportLoaderManager().restartLoader(0, null, this);
     }
 
     private void setupRecyclerView() {
@@ -129,8 +143,19 @@ public class ListFragment extends Fragment implements
 
             setupRecyclerView();
         }
+
+        mIdlingResource.setIdleState(true);
     }
 
     @Override
     public void onLoaderReset(Loader<List<Recipe>> loader) { /* Not implemented */ }
+
+    @VisibleForTesting
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+
+        return mIdlingResource;
+    }
 }

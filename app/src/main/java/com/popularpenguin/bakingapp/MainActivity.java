@@ -17,8 +17,6 @@ public class MainActivity extends AppCompatActivity implements
 
     public static final String RECIPE_EXTRA = "recipe";
 
-    private SimpleIdlingResource mIdlingResource;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,13 +28,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        mIdlingResource = (SimpleIdlingResource) getIdlingResource();
-    }
-
-    @Override
     public void onRecipeSelected(Recipe recipe) {
         Intent intent = new Intent(this, RecipeActivity.class);
         intent.putExtra(RECIPE_EXTRA, recipe);
@@ -44,14 +35,5 @@ public class MainActivity extends AppCompatActivity implements
         Log.d(TAG, recipe.getName());
 
         startActivity(intent);
-    }
-
-    @VisibleForTesting
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlingResource();
-        }
-
-        return mIdlingResource;
     }
 }

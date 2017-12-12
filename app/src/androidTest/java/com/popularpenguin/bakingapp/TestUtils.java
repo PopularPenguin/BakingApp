@@ -20,6 +20,7 @@ public class TestUtils {
             public boolean matches(Object item) {
                 if (isFirst && matcher.matches(item)) {
                     isFirst = false;
+
                     return true;
                 }
 
@@ -29,41 +30,6 @@ public class TestUtils {
             @Override
             public void describeTo(Description description) {
                 description.appendText("returns first matching item");
-            }
-        };
-    }
-
-    // TODO: Delete if not needed
-    static void sleep(long timeout) {
-        try {
-            Thread.sleep(timeout);
-        }
-        catch (InterruptedException e) {
-            // ...
-        }
-    }
-
-    // TODO: Delete if not needed
-    static Matcher<View> withText(String expected) {
-        return new BoundedMatcher<View, TextView>(TextView.class) {
-            private String expectedText = null;
-
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("String");
-            }
-
-            @Override
-            public boolean matchesSafely(TextView textView) {
-                if (this.expectedText == null) {
-                        this.expectedText = expected;
-                }
-                if (this.expectedText != null) {
-                    return expected.equals(textView.getText()
-                            .toString());
-                } else {
-                    return false;
-                }
             }
         };
     }
