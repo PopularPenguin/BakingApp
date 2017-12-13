@@ -6,6 +6,15 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/iv_no_video"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:contentDescription="@string/content_no_video"
+        android:src="@drawable/novideo"
+        android:scaleType="centerInside"/>
+
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/exo_view"
         android:layout_width="match_parent"

@@ -17,6 +17,7 @@
 
     <!-- Content descriptions -->
     <string name="content_image">Recipe</string>
+    <string name="content_no_video">No video for this step</string>
     <string name="content_exo_prev">Restart video</string>
     <string name="content_exo_play">Play</string>
     <string name="content_exo_pause">Pause</string>

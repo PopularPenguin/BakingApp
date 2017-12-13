@@ -17,6 +17,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -51,10 +52,10 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private static final String POSITION_EXTRA = "position";
 
-    @BindView(R.id.exo_view)
-    private SimpleExoPlayerView mPlayerView;
-    @BindView(R.id.tv_instructions)
-    private TextView mInstructions;
+    @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
+    @BindView(R.id.tv_instructions) TextView mInstructions;
+    @BindView(R.id.iv_no_video) ImageView mNoVideoImage;
+
     private Button mPrevious;
     private Button mNext;
 
@@ -82,8 +83,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         isPortrait = orientation == Surface.ROTATION_0 ||
                 orientation == Surface.ROTATION_180;
 
+        // show buttons unless it is on phone in landscape mode
         if (!isPhone || isPortrait) {
-            // these views don't exist in the tablet layout
             mPrevious = view.findViewById(R.id.btn_previous);
             mPrevious.setOnClickListener(this);
 
@@ -199,10 +200,12 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         // Hide ExoPlayer if there is no video to display (url is empty)
         if (mRecipe.getSteps().get(mIndex).getVideoURL().isEmpty()) {
-            mPlayerView.setVisibility(View.INVISIBLE);
+            mPlayerView.setVisibility(View.GONE);
+            mNoVideoImage.setVisibility(View.VISIBLE);
         }
         else {
             mPlayerView.setVisibility(View.VISIBLE);
+            mNoVideoImage.setVisibility(View.GONE);
         }
     }
 
