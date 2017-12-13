@@ -18,8 +18,6 @@ import okhttp3.Response;
 
 public class NetworkUtils {
 
-    private static final String TAG = NetworkUtils.class.getSimpleName();
-
     private static final String JSON_URL =
             "https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/baking.json";
 
@@ -43,6 +41,7 @@ public class NetworkUtils {
     }
 
     /** Check the network connection */
+    @SuppressWarnings("WeakerAccess")
     public static boolean isConnected(Context ctx) {
         // Check if there is an active network connection
         ConnectivityManager cm = (ConnectivityManager)

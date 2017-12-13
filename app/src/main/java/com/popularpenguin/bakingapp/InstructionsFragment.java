@@ -7,13 +7,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -51,12 +49,14 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private static final String TAG = InstructionsFragment.class.getSimpleName();
 
-    public static final String POSITION_EXTRA = "position";
+    private static final String POSITION_EXTRA = "position";
 
-    @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
-    @BindView(R.id.tv_instructions) TextView mInstructions;
-    Button mPrevious;
-    Button mNext;
+    @BindView(R.id.exo_view)
+    private SimpleExoPlayerView mPlayerView;
+    @BindView(R.id.tv_instructions)
+    private TextView mInstructions;
+    private Button mPrevious;
+    private Button mNext;
 
     private Recipe mRecipe;
     private int mIndex;
@@ -108,7 +108,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         return view;
     }
 
-    public void setData(@NonNull Bundle args) {
+    private void setData(@NonNull Bundle args) {
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
         mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
         mPosition = args.getLong(POSITION_EXTRA);

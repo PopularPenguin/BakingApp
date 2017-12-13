@@ -17,9 +17,6 @@
     <dimen name="recipe_image_height_phone">100dp</dimen>
     <dimen name="recipe_image_height_tablet">150dp</dimen>
 
-    <dimen name="recipe_card_corner">8dp</dimen>
-    <dimen name="recipe_card_elevation">16dp</dimen>
-
     <!-- InstructionsFragment -->
     <dimen name="card_corner">8dp</dimen>
     <dimen name="card_elevation">8dp</dimen>

@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /** This class handles the recipe's ingredients and steps list */
+@SuppressWarnings("WeakerAccess")
 public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdapterOnClickHandler,
     View.OnClickListener {
 

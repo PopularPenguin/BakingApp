@@ -11,11 +11,12 @@ import java.util.Collections;
 import java.util.List;
 
 /** Recipe contains an Ingredients list and a Steps list */
+@SuppressWarnings("unused")
 public class Recipe implements Parcelable {
-    private int mId;
-    private String mName;
-    private List<Ingredients> mIngredients;
-    private List<Step> mSteps;
+    private final int mId;
+    private final String mName;
+    private final List<Ingredients> mIngredients;
+    private final List<Step> mSteps;
 
     public Recipe(int id, @NonNull String name) {
         this(id, name, new ArrayList<>(), new ArrayList<>());

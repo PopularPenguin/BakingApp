@@ -1,15 +1,10 @@
 package com.popularpenguin.bakingapp;
 
-import android.content.res.Resources;
-import android.support.test.espresso.matcher.BoundedMatcher;
-import android.view.View;
-import android.widget.TextView;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 
-public class TestUtils {
+class TestUtils {
 
     // https://stackoverflow.com/questions/32387137/espresso-match-first-element-found-when-many-are-in-hierarchy
     static <T> Matcher<T> first(Matcher<T> matcher) {

@@ -18,8 +18,6 @@ import butterknife.ButterKnife;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
-    private static final String TAG = RecipeAdapter.class.getSimpleName();
-
     private final RecipeAdapterOnClickHandler mClickHandler;
 
     public interface RecipeAdapterOnClickHandler {

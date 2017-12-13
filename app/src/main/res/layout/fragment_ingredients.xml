@@ -29,7 +29,6 @@
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_instructions"
             style="@style/MyCardView"
             android:layout_margin="@dimen/text_vertical_margin"
             card_view:cardBackgroundColor="@color/colorCard">

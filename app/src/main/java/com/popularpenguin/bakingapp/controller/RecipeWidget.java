@@ -17,9 +17,8 @@ import java.util.List;
 /**
  * Implementation of App Widget functionality.
  */
+@SuppressWarnings("WeakerAccess")
 public class RecipeWidget extends AppWidgetProvider {
-
-    private static final String TAG = RecipeWidget.class.getSimpleName();
 
     private static Recipe mRecipe;
 

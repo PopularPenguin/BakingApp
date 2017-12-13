@@ -22,7 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class RecyclerListTest {
 
     @Rule
-    public FragmentTestRule<MainActivity, ListFragment> mRule =
+    public final FragmentTestRule<MainActivity, ListFragment> mRule =
             new FragmentTestRule<>(MainActivity.class, ListFragment.class);
 
     private IdlingResource mIdlingResource;

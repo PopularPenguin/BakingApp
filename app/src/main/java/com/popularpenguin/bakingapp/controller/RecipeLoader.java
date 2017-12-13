@@ -10,10 +10,6 @@ import java.util.List;
 
 public class RecipeLoader extends AsyncTaskLoader<List<Recipe>> {
 
-    private static final String TAG = RecipeLoader.class.getSimpleName();
-
-    private List<Recipe> mRecipes;
-
     public RecipeLoader(Context ctx) { super(ctx); }
 
     @Override

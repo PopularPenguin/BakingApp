@@ -3,7 +3,6 @@ package com.popularpenguin.bakingapp;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,8 +17,6 @@ import static com.popularpenguin.bakingapp.MainActivity.RECIPE_EXTRA;
  */
 public class RecipeActivity extends AppCompatActivity implements
         RecipeFragment.OnStepSelectedListener {
-
-    private static final String TAG = RecipeActivity.class.getSimpleName();
 
     public static final String INDEX_EXTRA = "index";
     public static final String BUNDLE_EXTRA = "bundle";

@@ -28,11 +28,10 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("WeakerAccess")
 public class ListFragment extends Fragment implements
         RecipeListAdapter.RecipeListAdapterOnClickHandler,
         LoaderManager.LoaderCallbacks<List<Recipe>> {
-
-    private static final String TAG = ListFragment.class.getSimpleName();
 
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
 

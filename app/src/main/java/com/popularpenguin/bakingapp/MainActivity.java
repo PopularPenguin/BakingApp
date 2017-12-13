@@ -1,14 +1,11 @@
 package com.popularpenguin.bakingapp;
 
 import android.content.Intent;
-import android.support.annotation.VisibleForTesting;
-import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.popularpenguin.bakingapp.data.Recipe;
-import com.popularpenguin.bakingapp.data.SimpleIdlingResource;
 
 public class MainActivity extends AppCompatActivity implements
         ListFragment.OnRecipeSelectedListener {

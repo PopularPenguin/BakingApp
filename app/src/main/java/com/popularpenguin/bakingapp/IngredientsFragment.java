@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressWarnings("WeakerAccess")
 public class IngredientsFragment extends Fragment implements View.OnClickListener {
 
     @BindView((R.id.btn_steps)) Button mSteps;
