@@ -1,6 +1,7 @@
 package com.popularpenguin.bakingapp;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.annotation.VisibleForTesting;
 import android.support.test.espresso.IdlingResource;
@@ -36,6 +37,7 @@ public class ListFragment extends Fragment implements
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
 
     private List<Recipe> mRecipeList;
+    private Parcelable mRecyclerViewState;
 
     private SimpleIdlingResource mIdlingResource;
 
@@ -84,6 +86,15 @@ public class ListFragment extends Fragment implements
         getActivity().getSupportLoaderManager().restartLoader(0, null, this);
     }
 
+    // save RecyclerView position
+    // https://stackoverflow.com/questions/28658579/refreshing-data-in-recyclerview-and-keeping-its-scroll-position
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mRecyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+
+        super.onSaveInstanceState(outState);
+    }
+
     private void setupRecyclerView() {
         RecipeListAdapter adapter = new RecipeListAdapter(getContext(), mRecipeList, this);
         RecyclerView.LayoutManager layoutManager;
@@ -107,6 +118,8 @@ public class ListFragment extends Fragment implements
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+
+        layoutManager.onRestoreInstanceState(mRecyclerViewState);
     }
 
     /** Clicking the RecyclerView */

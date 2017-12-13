@@ -1,6 +1,7 @@
 package com.popularpenguin.bakingapp;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
     @BindView(R.id.btn_ingredients) Button mIngredients;
     @BindView(R.id.rv_recipe) RecyclerView mRecyclerView;
 
+    private Parcelable mRecyclerViewState;
+
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -40,6 +43,14 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         mIngredients.setOnClickListener(this);
 
         return view;
+    }
+
+    // save RecyclerView state
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        mRecyclerViewState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+
+        super.onSaveInstanceState(outState);
     }
 
     private void setData(@NonNull Bundle args) {
@@ -58,6 +69,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+
+        layoutManager.onRestoreInstanceState(mRecyclerViewState);
     }
 
     /** Notify the parent activity when a step is selected and pass the video URL and instructions */
