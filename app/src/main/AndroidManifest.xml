@@ -14,16 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".RecipeActivity">
+        <activity android:name=".RecipeActivity"
+                  android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity">
         </activity>
-        <activity android:name=".StepActivity">
+        <activity android:name=".StepActivity"
+            android:parentActivityName=".RecipeActivity">
         </activity>
 
         <receiver

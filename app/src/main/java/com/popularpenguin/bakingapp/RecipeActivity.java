@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.popularpenguin.bakingapp.data.Recipe;
 
@@ -32,6 +35,8 @@ public class RecipeActivity extends AppCompatActivity implements
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (savedInstanceState != null) {
             mRecipe = savedInstanceState.getParcelable(RECIPE_EXTRA);
@@ -101,6 +106,28 @@ public class RecipeActivity extends AppCompatActivity implements
                     .replace(R.id.fragment_container_step, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_recipe, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+
+                return true;
+
+            case R.id.action_recipe:
+                finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /** If in IngredientFragment on a phone, back will bring you back to the RecipeFragment

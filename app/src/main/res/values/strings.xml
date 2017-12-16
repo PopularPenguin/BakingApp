@@ -22,4 +22,7 @@
     <string name="content_exo_play">Play</string>
     <string name="content_exo_pause">Pause</string>
 
+    <!-- Menu -->
+    <string name="menu_recipe">Back to recipes</string>
+
 </resources>
