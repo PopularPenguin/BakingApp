@@ -40,6 +40,7 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.popularpenguin.bakingapp.data.Recipe;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +55,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
     @BindView(R.id.tv_instructions) TextView mInstructions;
-    @BindView(R.id.iv_no_video) ImageView mNoVideoImage;
+    @BindView(R.id.iv_thumbnail) ImageView mThumbnailImage;
 
     private Button mPrevious;
     private Button mNext;
@@ -198,14 +199,22 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
             mNext.setEnabled(mIndex < mRecipe.getSteps().size() -1);
         }
 
-        // Hide ExoPlayer if there is no video to display (url is empty)
-        if (mRecipe.getSteps().get(mIndex).getVideoURL().isEmpty()) {
+        // Hide ExoPlayer if there is no video to display (uri is empty)
+        if (mRecipe.getVideoUri(mIndex).toString().isEmpty()) {
             mPlayerView.setVisibility(View.GONE);
-            mNoVideoImage.setVisibility(View.VISIBLE);
+            mThumbnailImage.setVisibility(View.VISIBLE);
+
+            // load the thumbnail image, if no image available load the novideo placeholder image
+            Uri thumbnailUri = mRecipe.getThumbnailUri(mIndex);
+            Picasso.with(getContext())
+                    .load(thumbnailUri)
+                    .placeholder(R.drawable.novideo)
+                    .error(R.drawable.novideo)
+                    .into(mThumbnailImage);
         }
         else {
             mPlayerView.setVisibility(View.VISIBLE);
-            mNoVideoImage.setVisibility(View.GONE);
+            mThumbnailImage.setVisibility(View.GONE);
         }
     }
 

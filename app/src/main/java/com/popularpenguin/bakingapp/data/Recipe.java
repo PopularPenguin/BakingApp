@@ -50,24 +50,35 @@ public class Recipe implements Parcelable {
      * @return the Uri of the video to send to ExoPlayer
      */
     public Uri getVideoUri(int index) {
-        Step step = this.getSteps().get(index);
-        String uriString;
+        Step step = getSteps().get(index);
+        String uriString = "";
 
         if (!step.getVideoURL().isEmpty()) {
             uriString = step.getVideoURL();
+
+            // check if video is in the right format, if not return an empty uri
+            if (!uriString.endsWith(".mp4")) {
+                return Uri.parse("");
+            }
         }
-        else {
-            // load the mp4 in the thumbnail
+
+        return Uri.parse(uriString);
+    }
+
+    /** Get the thumbnail image uri
+     *
+     * @param index Index of the recipe step to get the uri from
+     * @return the Uri of the thumbnail image
+     */
+    public Uri getThumbnailUri(int index) {
+        Step step = getSteps().get(index);
+        String uriString = "";
+
+        if (!step.getThumbnailURL().isEmpty()) {
             uriString = step.getThumbnailURL();
         }
 
-        // check if the link is .mp4, if not return an empty uri
-        if (uriString.endsWith(".mp4")) {
-            return Uri.parse(uriString);
-        }
-        else {
-            return Uri.parse("");
-        }
+        return Uri.parse(uriString);
     }
 
     @Override

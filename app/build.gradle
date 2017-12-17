@@ -45,6 +45,8 @@ dependencies {
     compile 'com.google.android.exoplayer:exoplayer-core:r2.5.4'
     compile 'com.google.android.exoplayer:exoplayer-ui:r2.5.4'
 
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
     // Testing dependencies
     compile 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
 

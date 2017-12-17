@@ -7,11 +7,11 @@
               android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/iv_no_video"
+        android:id="@+id/iv_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="8"
-        android:contentDescription="@string/content_no_video"
+        android:contentDescription="@string/content_image"
         android:src="@drawable/novideo"
         android:scaleType="centerInside"/>
 
