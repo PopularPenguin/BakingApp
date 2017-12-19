@@ -17,20 +17,23 @@ public class Recipe implements Parcelable {
     private final String mName;
     private final List<Ingredients> mIngredients;
     private final List<Step> mSteps;
+    private final String mImageUrl;
 
     public Recipe(int id, @NonNull String name) {
-        this(id, name, new ArrayList<>(), new ArrayList<>());
+        this(id, name, new ArrayList<>(), new ArrayList<>(), "");
     }
 
     public Recipe(int id,
                   @NonNull String name,
                   @NonNull List<Ingredients> ingredients,
-                  @NonNull List<Step> steps) {
+                  @NonNull List<Step> steps,
+                  @NonNull String imageUrl) {
 
         mId = id;
         mName = name;
         mIngredients = ingredients;
         mSteps = steps;
+        mImageUrl = imageUrl;
     }
 
     private Recipe(Parcel in) {
@@ -42,6 +45,8 @@ public class Recipe implements Parcelable {
 
         Step[] steps = in.createTypedArray(Step.CREATOR);
         mSteps = new ArrayList<>(Arrays.asList(steps));
+
+        mImageUrl = in.readString();
     }
 
     /** Get the video uri stored in the Recipe object
@@ -138,6 +143,8 @@ public class Recipe implements Parcelable {
         Step step = new Step(id, shortDescription, description, videoURL, thumbnailURL);
         mSteps.add(step);
     }
+
+    public Uri getImageUri() { return Uri.parse(mImageUrl); }
 
     @Override
     public String toString() {

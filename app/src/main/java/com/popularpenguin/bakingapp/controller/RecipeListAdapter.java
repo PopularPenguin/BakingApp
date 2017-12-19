@@ -1,7 +1,6 @@
 package com.popularpenguin.bakingapp.controller;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.popularpenguin.bakingapp.data.Recipe;
 import com.popularpenguin.bakingapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -74,8 +74,13 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
         void bind(Recipe recipe) {
             mItemText.setText(recipe.getName());
-            int position = getAdapterPosition();
-            mImage.setImageResource(getImage(position));
+
+            // load the recipe image, if there isn't one, load a default image
+            Picasso.with(ctx)
+                    .load(recipe.getImageUri())
+                    .placeholder(R.drawable.nutella)
+                    .error(R.drawable.nutella)
+                    .into(mImage);
         }
 
         @Override
@@ -84,16 +89,5 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Li
 
             mClickHandler.onClick(mRecipeList.get(position));
         }
-    }
-
-    /** Obtain the image id for the specific adapter position as defined in values/arrays.xml */
-    private int getImage(int position) {
-        // https://stackoverflow.com/questions/6945678/storing-r-drawable-ids-in-xml-array
-        TypedArray ids = ctx.getResources().obtainTypedArray(R.array.array_images);
-        int imageId = ids.getResourceId(position, -1);
-
-        ids.recycle();
-
-        return imageId;
     }
 }

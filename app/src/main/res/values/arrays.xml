@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <integer-array name="array_images">
-        <item>@drawable/nutella</item>
-        <item>@drawable/brownie</item>
-        <item>@drawable/cake</item>
-        <item>@drawable/cheesecake</item>
-    </integer-array>
-</resources>
