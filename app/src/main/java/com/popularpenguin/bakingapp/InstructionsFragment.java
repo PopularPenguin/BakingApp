@@ -12,7 +12,6 @@ import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -109,10 +108,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
             setData(args, false);
         }
 
-        Log.d(TAG, "mPlayWhenReady after data  = " + mPlayWhenReady);
         setViews();
-
-        Log.d(TAG, "mPlayWhenReady after views = " + mPlayWhenReady);
 
         return view;
     }
@@ -153,8 +149,6 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public void onStart() {
         super.onStart();
 
-        Log.d(TAG, "mPlayWhenReady = " + mPlayWhenReady);
-
         if (Util.SDK_INT > 23) {
             initPlayer();
         }
@@ -182,7 +176,9 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     public void onPause() {
         super.onPause();
 
-        mPlayWhenReady = mExoPlayer.getPlayWhenReady();
+        if (mExoPlayer != null) {
+            mPlayWhenReady = mExoPlayer.getPlayWhenReady();
+        }
 
         if (Util.SDK_INT <= 23) {
             releasePlayer();
@@ -309,6 +305,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     /** Switch the video to proper step when navigating back/forward */
     private void switchVideo() {
         mPosition = 0; // reset the seek position
+        mPlayWhenReady = true;
+
         releasePlayer();
 
         initPlayer();
