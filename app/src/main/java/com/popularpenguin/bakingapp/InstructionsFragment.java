@@ -12,6 +12,7 @@ import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
@@ -52,6 +53,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     private static final String TAG = InstructionsFragment.class.getSimpleName();
 
     private static final String POSITION_EXTRA = "position";
+    private static final String PLAYING_EXTRA = "playing";
 
     @BindView(R.id.exo_view) SimpleExoPlayerView mPlayerView;
     @BindView(R.id.tv_instructions) TextView mInstructions;
@@ -70,6 +72,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private long mPosition; // the position in ms of the video
+    private boolean mPlayWhenReady; // track the play/pause state on rotation/home pressed
 
     @Override @Nullable
     public View onCreateView(LayoutInflater inflater,
@@ -99,21 +102,32 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
         if (savedInstanceState != null) {
             args = savedInstanceState;
+            setData(args, true);
         }
         else {
             args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
+            setData(args, false);
         }
 
-        setData(args);
+        Log.d(TAG, "mPlayWhenReady after data  = " + mPlayWhenReady);
         setViews();
+
+        Log.d(TAG, "mPlayWhenReady after views = " + mPlayWhenReady);
 
         return view;
     }
 
-    private void setData(@NonNull Bundle args) {
+    private void setData(@NonNull Bundle args, boolean hasSavedState) {
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
         mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
         mPosition = args.getLong(POSITION_EXTRA);
+
+        if (hasSavedState) {
+            mPlayWhenReady = args.getBoolean(PLAYING_EXTRA);
+        }
+        else {
+            mPlayWhenReady = true; // autoplay video if this is the first time the fragment is initialized
+        }
     }
 
     @Override
@@ -129,6 +143,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
             outState.putLong(POSITION_EXTRA, 0L);
         }
 
+        outState.putBoolean(PLAYING_EXTRA, mPlayWhenReady);
+
         super.onSaveInstanceState(outState);
     }
 
@@ -136,6 +152,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onStart() {
         super.onStart();
+
+        Log.d(TAG, "mPlayWhenReady = " + mPlayWhenReady);
 
         if (Util.SDK_INT > 23) {
             initPlayer();
@@ -163,6 +181,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onPause() {
         super.onPause();
+
+        mPlayWhenReady = mExoPlayer.getPlayWhenReady();
 
         if (Util.SDK_INT <= 23) {
             releasePlayer();
@@ -258,7 +278,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
                     new DefaultDataSourceFactory(getContext(), userAgent),
                     new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(mPlayWhenReady);
             mExoPlayer.seekTo(mPosition);
         }
     }
