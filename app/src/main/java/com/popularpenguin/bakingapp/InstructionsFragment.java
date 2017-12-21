@@ -196,7 +196,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
         // disable buttons if they are at first/last index
         if (!isPhone || isPortrait) {
             mPrevious.setEnabled(mIndex > 0);
-            mNext.setEnabled(mIndex < mRecipe.getSteps().size() -1);
+            mNext.setEnabled(mIndex < mRecipe.getSteps().size() - 1);
         }
 
         // Hide ExoPlayer if there is no video to display (uri is empty)
@@ -221,6 +221,8 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     /** Release ExoPlayer */
     private void releasePlayer() {
         if (mExoPlayer != null) {
+            mPosition = mExoPlayer.getCurrentPosition();
+
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
