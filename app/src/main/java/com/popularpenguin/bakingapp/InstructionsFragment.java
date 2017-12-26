@@ -304,10 +304,10 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     /** Switch the video to proper step when navigating back/forward */
     private void switchVideo() {
+        releasePlayer();
+
         mPosition = 0; // reset the seek position
         mPlayWhenReady = true;
-
-        releasePlayer();
 
         initPlayer();
     }
