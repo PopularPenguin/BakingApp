@@ -1,7 +1,9 @@
 package com.popularpenguin.bakingapp;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -89,6 +91,11 @@ public class RecipeActivity extends AppCompatActivity implements
 
         // we are on a phone, so start StepActivity
         if (isPhoneLayout) {
+            SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("index", index);
+            editor.commit();
+
             Intent intent = new Intent(this, StepActivity.class);
             intent.putExtra(BUNDLE_EXTRA, args);
             startActivity(intent);

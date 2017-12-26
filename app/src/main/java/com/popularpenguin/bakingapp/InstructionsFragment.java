@@ -3,6 +3,7 @@ package com.popularpenguin.bakingapp;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -115,7 +116,14 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private void setData(@NonNull Bundle args, boolean hasSavedState) {
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
-        mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
+        if (isPhone) {
+            SharedPreferences prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+            mIndex = prefs.getInt("index", 0);
+        }
+        else {
+            mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
+        }
+
         mPosition = args.getLong(POSITION_EXTRA);
 
         if (hasSavedState) {
