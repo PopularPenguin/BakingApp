@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -105,7 +106,7 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
             setData(args, true);
         }
         else {
-            args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
+            args = getActivity().getIntent().getExtras();
             setData(args, false);
         }
 
@@ -116,13 +117,10 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
 
     private void setData(@NonNull Bundle args, boolean hasSavedState) {
         mRecipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
-        if (isPhone) {
-            SharedPreferences prefs = getActivity().getSharedPreferences("prefs", Context.MODE_PRIVATE);
-            mIndex = prefs.getInt("index", 0);
-        }
-        else {
-            mIndex = args.getInt(RecipeActivity.INDEX_EXTRA);
-        }
+
+        SharedPreferences prefs = getActivity()
+                .getSharedPreferences(RecipeActivity.PREFS_KEY, Context.MODE_PRIVATE);
+        mIndex = prefs.getInt(RecipeActivity.INDEX_KEY, 0);
 
         mPosition = args.getLong(POSITION_EXTRA);
 
@@ -137,7 +135,12 @@ public class InstructionsFragment extends Fragment implements View.OnClickListen
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
-        outState.putInt(RecipeActivity.INDEX_EXTRA, mIndex);
+
+        SharedPreferences prefs = getActivity()
+                .getSharedPreferences(RecipeActivity.PREFS_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(RecipeActivity.INDEX_KEY, mIndex);
+        editor.apply();
 
         // save the video seek position
         if (mExoPlayer != null) {

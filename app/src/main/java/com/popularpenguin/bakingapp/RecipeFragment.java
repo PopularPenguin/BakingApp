@@ -38,8 +38,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
 
         ButterKnife.bind(this, view);
 
-        Bundle args = getActivity().getIntent().getBundleExtra(RecipeActivity.BUNDLE_EXTRA);
-        setData(args);
+        Recipe recipe = getActivity().getIntent().getParcelableExtra(MainActivity.RECIPE_EXTRA);
+        setData(recipe);
 
         mIngredients.setOnClickListener(this);
 
@@ -54,16 +54,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeAdap
         super.onSaveInstanceState(outState);
     }
 
-    private void setData(@NonNull Bundle args) {
-        Recipe recipe;
-
-        if (args.containsKey(MainActivity.RECIPE_EXTRA)) {
-            recipe = args.getParcelable(MainActivity.RECIPE_EXTRA);
-        }
-        else {
-            throw new RuntimeException("Recipe data was not passed to " + TAG);
-        }
-
+    private void setData(@NonNull Recipe recipe) {
         RecipeAdapter adapter = new RecipeAdapter(getContext(), recipe, this);
         mRecyclerView.setAdapter(adapter);
 

@@ -34,10 +34,8 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
 
         ButterKnife.bind(this, view);
 
-        // get the recipe from the parent activity's intent bundle
-        mRecipe = getActivity().getIntent()
-                .getBundleExtra(RecipeActivity.BUNDLE_EXTRA)
-                .getParcelable(MainActivity.RECIPE_EXTRA);
+        // get the recipe from the parent activity's intent
+        mRecipe = getActivity().getIntent().getParcelableExtra(MainActivity.RECIPE_EXTRA);
 
         mSteps.setOnClickListener(this);
 

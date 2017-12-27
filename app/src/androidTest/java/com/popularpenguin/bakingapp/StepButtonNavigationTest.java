@@ -2,7 +2,6 @@ package com.popularpenguin.bakingapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -36,12 +35,8 @@ public class StepButtonNavigationTest {
                     Context ctx = InstrumentationRegistry.getInstrumentation().getTargetContext();
                     mRecipe = createTestRecipe();
 
-                    Bundle args = new Bundle();
-                    args.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
-                    args.putInt(RecipeActivity.INDEX_EXTRA, 0);
-
                     Intent intent = new Intent(ctx, StepActivity.class);
-                    intent.putExtra(RecipeActivity.BUNDLE_EXTRA, args);
+                    intent.putExtra(MainActivity.RECIPE_EXTRA, mRecipe);
 
                     return intent;
                 }

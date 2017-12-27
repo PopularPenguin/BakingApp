@@ -26,6 +26,9 @@ public class RecipeActivity extends AppCompatActivity implements
     public static final String BUNDLE_EXTRA = "bundle";
     public static final String RECIPE_BROADCAST_EXTRA = "recipeBroadcast";
 
+    public static final String PREFS_KEY = "prefs";
+    public static final String INDEX_KEY = "index";
+
     public static final String INGREDIENTS_TAG = "IngredientsFragment";
 
     private FragmentManager mFragmentManager;
@@ -50,14 +53,6 @@ public class RecipeActivity extends AppCompatActivity implements
 
         isPhoneLayout = getResources().getBoolean(R.bool.isPhone);
 
-        Bundle args = new Bundle();
-        args.putParcelable(RECIPE_EXTRA, mRecipe);
-        args.putInt(INDEX_EXTRA, 0);
-
-        Intent intent = new Intent();
-        intent.putExtra(RecipeActivity.BUNDLE_EXTRA, args);
-        setIntent(intent);
-
         // don't add a fragment if there is already one inside the container
         Fragment containerFragment = mFragmentManager.findFragmentById(R.id.fragment_container);
         if (containerFragment == null) {
@@ -72,40 +67,26 @@ public class RecipeActivity extends AppCompatActivity implements
         broadcastRecipe();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(RECIPE_EXTRA, mRecipe);
-
-        super.onSaveInstanceState(outState);
-    }
-
     /**
      * Callback that passes the video URL and instructions to InstructionsFragment
      * Called from RecipeFragment
      */
     @Override
     public void onStepSelected(int index) {
-        Bundle args = new Bundle();
-        args.putParcelable(MainActivity.RECIPE_EXTRA, mRecipe);
-        args.putInt(INDEX_EXTRA, index);
+        // add index to the preferences
+        SharedPreferences prefs = getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(INDEX_KEY, index);
+        editor.apply();
 
         // we are on a phone, so start StepActivity
         if (isPhoneLayout) {
-            SharedPreferences prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putInt("index", index);
-            editor.commit();
-
             Intent intent = new Intent(this, StepActivity.class);
-            intent.putExtra(BUNDLE_EXTRA, args);
+            intent.putExtra(RECIPE_EXTRA, mRecipe);
             startActivity(intent);
         }
         // tablet, replace InstructionsFragment
         else {
-            Intent intent = new Intent();
-            intent.putExtra(BUNDLE_EXTRA, args);
-            setIntent(intent);
-
             InstructionsFragment fragment = new InstructionsFragment();
 
             mFragmentManager.beginTransaction()
