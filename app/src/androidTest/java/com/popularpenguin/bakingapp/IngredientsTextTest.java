@@ -67,9 +67,12 @@ public class IngredientsTextTest {
                 .perform(click());
 
         Ingredients ingredient = mRecipe.getIngredients().get(0);
+
+        String servingsString = String.format("(%s %s)%n%n", mRecipe.getServings(),
+                mFragRule.getActivity().getResources().getString(R.string.text_servings));
         String quantityText = ingredient.getQuantity();
         String ingredientText = ingredient.getIngredient();
-        String expected = String.format("%s %s%n%n", quantityText, ingredientText);
+        String expected = String.format("%s%s %s%n%n", servingsString, quantityText, ingredientText);
 
         onView(TestUtils.first(withId(R.id.tv_ingredients)))
                 .check(matches(withText(expected)));

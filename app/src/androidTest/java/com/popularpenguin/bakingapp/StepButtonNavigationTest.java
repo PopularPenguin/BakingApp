@@ -60,6 +60,13 @@ public class StepButtonNavigationTest {
      * then click the previous button until back at step 0 */
     @Test
     public void testNavigationButtons() {
+        // click previous button on start to ensure we are at index 0 and the button stops
+        // working at that point
+        for (int i = 0; i < 9; i++) {
+            onView(TestUtils.first(withId(R.id.btn_previous)))
+                    .perform(click());
+        }
+
         // check the step's text and then click the next button to go to the next step
         for (int i = 0; i < 9; i++) {
             onView(TestUtils.first(withId(R.id.tv_instructions)))
