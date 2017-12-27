@@ -85,9 +85,11 @@ public class NetworkUtils {
             JSONArray stepsJSON = recipeObject.getJSONArray("steps");
             List<Step> steps = getSteps(stepsJSON);
 
+            String servings = recipeObject.getString("servings");
+
             String imageUrl = recipeObject.getString("image");
 
-            Recipe recipe = new Recipe(id, name, ingredients, steps, imageUrl);
+            Recipe recipe = new Recipe(id, name, ingredients, steps, servings, imageUrl);
             recipes.add(recipe);
         }
 

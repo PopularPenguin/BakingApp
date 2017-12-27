@@ -10,11 +10,13 @@
     <string name="text_select_step">Select a step: </string>
     <string name="text_ingredients">List of ingredients: </string>
 
+    <string name="text_servings">Servings</string>
+
     <!-- Phone navigation buttons for InstructionsFragment -->
     <string name="btn_previous">Previous</string>
     <string name="btn_next">Next</string>
 
-    <string name="appwidget_text">Select a recipe inside the app</string>
+    <string name="appwidget_text">Select a recipe inside the app (drag widget corners to resize)</string>
 
     <!-- Content descriptions -->
     <string name="content_image">Recipe</string>

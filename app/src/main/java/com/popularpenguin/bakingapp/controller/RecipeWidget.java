@@ -39,7 +39,9 @@ public class RecipeWidget extends AppWidgetProvider {
             // build the text to display in the TextView
             StringBuilder displayText = new StringBuilder();
 
-            displayText.append(String.format("%s:%n", mRecipe.getName()));
+            String servingsString = mRecipe.getServings() + " " +
+                    context.getResources().getString(R.string.text_servings);
+            displayText.append(String.format("%s: %s%n%n", mRecipe.getName(), servingsString));
 
             for (Ingredients ingredient : ingredients) {
                 String quantityText = ingredient.getQuantity();

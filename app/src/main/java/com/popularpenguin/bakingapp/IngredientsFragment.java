@@ -48,6 +48,10 @@ public class IngredientsFragment extends Fragment implements View.OnClickListene
     private void setIngredientsText() {
         List<Ingredients> ingredients = mRecipe.getIngredients();
 
+        String servingsString = String.format("(%s %s)%n%n", mRecipe.getServings(),
+                getResources().getString(R.string.text_servings));
+        mIngredients.append(servingsString);
+
         for (Ingredients ingredient : ingredients) {
             String quantityText = ingredient.getQuantity();
             String ingredientText = ingredient.getIngredient();
