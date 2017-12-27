@@ -2,6 +2,7 @@
     <string name="app_name">BakingApp</string>
 
     <string name="con_error">Check network connectivity</string>
+    <string name="btn_reconnect">Reconnect</string>
 
     <string name="btn_ingredients">Ingredients \-\-\u003E</string>
     <string name="btn_steps">\u003C\-\- Steps </string>

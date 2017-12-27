@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.popularpenguin.bakingapp.controller.RecipeListAdapter;
@@ -31,9 +32,11 @@ import butterknife.ButterKnife;
 @SuppressWarnings("WeakerAccess")
 public class ListFragment extends Fragment implements
         RecipeListAdapter.RecipeListAdapterOnClickHandler,
-        LoaderManager.LoaderCallbacks<List<Recipe>> {
+        LoaderManager.LoaderCallbacks<List<Recipe>>,
+        View.OnClickListener {
 
     @BindView(R.id.rv_list) RecyclerView mRecyclerView;
+    @BindView(R.id.btn_reconnect) Button mReconnect;
 
     private List<Recipe> mRecipeList;
     private Parcelable mRecyclerViewState;
@@ -74,6 +77,8 @@ public class ListFragment extends Fragment implements
                 return 0;
             }
         }); // END code block
+
+        mReconnect.setOnClickListener(this);
 
         return view;
     }
@@ -117,6 +122,7 @@ public class ListFragment extends Fragment implements
 
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setVisibility(View.VISIBLE);
 
         layoutManager.onRestoreInstanceState(mRecyclerViewState);
     }
@@ -146,8 +152,15 @@ public class ListFragment extends Fragment implements
     public void onLoadFinished(Loader<List<Recipe>> loader, List<Recipe> data) {
         if (data == null || data.isEmpty()) {
             Toast.makeText(getContext(), R.string.con_error, Toast.LENGTH_LONG).show();
+
+            if (mRecyclerView != null) {
+                mRecyclerView.setVisibility(View.GONE);
+            }
+            mReconnect.setVisibility(View.VISIBLE);
         }
         else {
+            mReconnect.setVisibility(View.GONE);
+
             mRecipeList = data;
 
             setupRecyclerView();
@@ -158,6 +171,18 @@ public class ListFragment extends Fragment implements
 
     @Override
     public void onLoaderReset(Loader<List<Recipe>> loader) { /* Not implemented */ }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_reconnect:
+                getActivity().getSupportLoaderManager().restartLoader(0, null, this);
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Invalid view id");
+        }
+    }
 
     @VisibleForTesting
     public IdlingResource getIdlingResource() {
