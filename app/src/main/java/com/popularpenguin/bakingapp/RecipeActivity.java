@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,8 +23,6 @@ import static com.popularpenguin.bakingapp.MainActivity.RECIPE_EXTRA;
 public class RecipeActivity extends AppCompatActivity implements
         RecipeFragment.OnStepSelectedListener {
 
-    public static final String INDEX_EXTRA = "index";
-    public static final String BUNDLE_EXTRA = "bundle";
     public static final String RECIPE_BROADCAST_EXTRA = "recipeBroadcast";
 
     public static final String PREFS_KEY = "prefs";
@@ -65,6 +64,13 @@ public class RecipeActivity extends AppCompatActivity implements
 
         // send the selected recipe to the widget
         broadcastRecipe();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(RECIPE_EXTRA, mRecipe);
+
+        super.onSaveInstanceState(outState);
     }
 
     /**
